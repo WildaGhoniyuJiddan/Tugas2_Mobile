@@ -12,9 +12,9 @@ class DataGudang {
 
   // Daftar Anggota Kelompok Pengembang
   static final List<Map<String, String>> daftarAnggota = [
-    {"nama": "Wilda Ghoniyu Jiddan", "nim": "124230085"},
-    {"nama": "Rafid Ihsan Naufal", "nim": "1242300"},
-    {"nama": "Bagus Fajjar Pambudi", "nim": "124230"},
-    {"nama": "Achmad Maulana", "nim": "124230"},
+    {"nama": "Wilda Ghoniyu Jiddan", "nim": "124240085"},
+    {"nama": "Rafid Ihsan Naufal", "nim": "124240095"},
+    {"nama": "Bagus Fajjar Pambudi", "nim": "124240108"},
+    {"nama": "Achmad Maulana", "nim": "124240112"},
   ];
 }

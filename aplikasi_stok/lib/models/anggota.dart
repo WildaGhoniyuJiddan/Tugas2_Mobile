@@ -16,22 +16,22 @@ class AnggotaKelompok {
     return [
       AnggotaKelompok(
         nama: "Wilda Ghoniyu Jiddan",
-        nim: "124230085",
+        nim: "124240085",
         peran: "",
       ),
       AnggotaKelompok(
         nama: "Rafid Ihsan Naufal",
-        nim: "1242300",
+        nim: "124240095",
         peran: "",
       ),
       AnggotaKelompok(
         nama: "Bagus Fajjar Pambudi",
-        nim: "124230",
+        nim: "124240108",
         peran: "",
       ),
       AnggotaKelompok(
         nama: "Achmad Maulana",
-        nim: "124230",
+        nim: "124240112",
         peran: "",
       ),
     ];
