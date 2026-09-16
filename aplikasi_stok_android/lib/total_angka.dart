@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// Halaman Jumlah Total Angka dalam Suatu Field Input Data (Kriteria 6)
+/// Diselaraskan 100% dengan modul aplikasi_stok (termasuk Total Akumulasi Digit)
 class HalamanTotalAngka extends StatefulWidget {
   const HalamanTotalAngka({super.key});
 
@@ -17,6 +18,20 @@ class _HalamanTotalAngkaState extends State<HalamanTotalAngka> {
   double? _maks;
   double? _min;
   int _jumlahData = 0;
+  int? _totalDigit; // Akumulasi total digit angka (sesuai modul aplikasi_stok)
+
+  // Fungsi untuk menghitung akumulasi total per digit angka
+  int _hitungTotalDigit(List<double> deret) {
+    int total = 0;
+    for (var a in deret) {
+      String str = a.toString().replaceAll('.', '').replaceAll('-', '');
+      for (int i = 0; i < str.length; i++) {
+        int? d = int.tryParse(str[i]);
+        if (d != null) total += d;
+      }
+    }
+    return total;
+  }
 
   void _hitung() {
     final teks = _inputController.text.trim();
@@ -56,6 +71,7 @@ class _HalamanTotalAngkaState extends State<HalamanTotalAngka> {
       _rataRata = _total! / _jumlahData; // Rata-rata
       _maks = angkaList.reduce((a, b) => a > b ? a : b); // Maksimum
       _min = angkaList.reduce((a, b) => a < b ? a : b); // Minimum
+      _totalDigit = _hitungTotalDigit(angkaList); // Akumulasi Digit Angka
     });
   }
 
@@ -78,7 +94,7 @@ class _HalamanTotalAngkaState extends State<HalamanTotalAngka> {
             ),
             const SizedBox(height: 4),
             Text(
-              "Pisahkan antar angka dengan tanda koma (,) atau spasi.",
+              "Pemisah dapat berupa koma (,) atau spasi. Contoh: 15, 30, 45, 20, 10",
               style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
             ),
             const SizedBox(height: 12),
@@ -110,7 +126,7 @@ class _HalamanTotalAngkaState extends State<HalamanTotalAngka> {
 
             const SizedBox(height: 20),
 
-            // Hasil Perhitungan
+            // Hasil Perhitungan Lengkap
             if (_total != null)
               Card(
                 elevation: 3,
@@ -123,7 +139,7 @@ class _HalamanTotalAngkaState extends State<HalamanTotalAngka> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Hasil Perhitungan:",
+                        "Hasil Perhitungan Field Input:",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -133,6 +149,8 @@ class _HalamanTotalAngkaState extends State<HalamanTotalAngka> {
                       _itemHasil("Nilai Rata-rata", _rataRata!.toStringAsFixed(2), null),
                       _itemHasil("Nilai Tertinggi (Maks)", "$_maks", Colors.green),
                       _itemHasil("Nilai Terendah (Min)", "$_min", Colors.red),
+                      const Divider(height: 16),
+                      _itemHasil("Total Akumulasi Digit", "$_totalDigit", Colors.purple),
                     ],
                   ),
                 ),

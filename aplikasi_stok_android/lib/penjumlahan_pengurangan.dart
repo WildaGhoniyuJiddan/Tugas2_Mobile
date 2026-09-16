@@ -3,6 +3,7 @@ import 'data_gudang.dart';
 
 /// Halaman Penjumlahan dan Pengurangan Angka (Kriteria 3)
 /// Studi Kasus: Tambah Stok Masuk (+) & Kurang Stok Keluar (-) Barang Gudang
+/// Diselaraskan 100% dengan modul CLI aplikasi_stok
 class HalamanPenjumlahanPengurangan extends StatefulWidget {
   const HalamanPenjumlahanPengurangan({super.key});
 
@@ -18,6 +19,7 @@ class _HalamanPenjumlahanPenguranganState
 
   // Menyimpan barang yang sedang dipilih
   int? _idDipilih;
+  String? _catatanPerhitungan;
 
   // Fungsi Operasi Penjumlahan (+)
   void _tambahStok() {
@@ -37,8 +39,11 @@ class _HalamanPenjumlahanPenguranganState
           .firstWhere((item) => item["id"] == _idDipilih);
       final stokLama = barang["stok"];
       barang["stok"] = stokLama + jumlah; // Operasi Penjumlahan (+)
-      _tampilkanPesan(
-          "Penjumlahan Berhasil: $stokLama + $jumlah = ${barang["stok"]} ${barang["satuan"]}");
+      _catatanPerhitungan =
+          "[✓] PENJUMLAHAN STOK BERHASIL!\n"
+          "Perhitungan Matematika : $stokLama + $jumlah = ${barang["stok"]}\n"
+          "Stok akhir '${barang["nama"]}' sekarang: ${barang["stok"]} ${barang["satuan"]}";
+      _tampilkanPesan("Penjumlahan Berhasil: $stokLama + $jumlah = ${barang["stok"]} ${barang["satuan"]}");
       _jumlahController.clear();
     });
   }
@@ -67,15 +72,18 @@ class _HalamanPenjumlahanPenguranganState
       }
 
       barang["stok"] = stokLama - jumlah; // Operasi Pengurangan (-)
-      _tampilkanPesan(
-          "Pengurangan Berhasil: $stokLama - $jumlah = ${barang["stok"]} ${barang["satuan"]}");
+      _catatanPerhitungan =
+          "[✓] PENGURANGAN STOK BERHASIL!\n"
+          "Perhitungan Matematika : $stokLama - $jumlah = ${barang["stok"]}\n"
+          "Stok akhir '${barang["nama"]}' sekarang: ${barang["stok"]} ${barang["satuan"]}";
+      _tampilkanPesan("Pengurangan Berhasil: $stokLama - $jumlah = ${barang["stok"]} ${barang["satuan"]}");
       _jumlahController.clear();
     });
   }
 
   void _tampilkanPesan(String pesan) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(pesan), duration: const Duration(seconds: 2)),
+      SnackBar(content: Text(pesan), duration: const Duration(seconds: 3)),
     );
   }
 
@@ -179,6 +187,22 @@ class _HalamanPenjumlahanPenguranganState
                 ),
               ],
             ),
+
+            if (_catatanPerhitungan != null) ...[
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.blue.shade300),
+                ),
+                child: Text(
+                  _catatanPerhitungan!,
+                  style: const TextStyle(fontWeight: FontWeight.w600, height: 1.4),
+                ),
+              ),
+            ],
           ],
         ),
       ),

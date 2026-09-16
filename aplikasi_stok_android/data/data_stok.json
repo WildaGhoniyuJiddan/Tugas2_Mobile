@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "nama": "Beras Premium 5kg",
+    "stok": 25.0,
+    "satuan": "karung"
+  },
+  {
+    "id": 2,
+    "nama": "Minyak Goreng 2L",
+    "stok": 14.0,
+    "satuan": "pouch"
+  },
+  {
+    "id": 3,
+    "nama": "Gula Pasir Kristal 1kg",
+    "stok": 30.0,
+    "satuan": "kg"
+  },
+  {
+    "id": 4,
+    "nama": "Kopi Bubuk Robusta 250g",
+    "stok": 17.0,
+    "satuan": "pack"
+  },
+  {
+    "id": 5,
+    "nama": "Tepung Terigu Serbaguna 1kg",
+    "stok": 8.0,
+    "satuan": "kg"
+  },
+  {
+    "id": 6,
+    "nama": "Indomie",
+    "stok": 90.0,
+    "satuan": "pcs"
+  }
+]

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 /// Halaman Perkalian dan Pembagian Angka (Kriteria 4)
 /// Studi Kasus: Hitung Total Box (Perkalian) & Distribusi Rak (Pembagian & Modulo)
+/// Diselaraskan 100% dengan modul CLI aplikasi_stok
 class HalamanPerkalianPembagian extends StatefulWidget {
   const HalamanPerkalianPembagian({super.key});
 
@@ -36,7 +37,7 @@ class _HalamanPerkalianPembagianState extends State<HalamanPerkalianPembagian> {
     final total = box * isi; // Operasi Perkalian (*)
     setState(() {
       _hasilPerkalian =
-          "Rumus: $box box × $isi unit/box\nTotal: $total unit barang siap disimpan di gudang.";
+          "Rumus : $box box × $isi unit/box\nTotal : $total unit barang siap disimpan di gudang.";
     });
   }
 
@@ -54,10 +55,15 @@ class _HalamanPerkalianPembagianState extends State<HalamanPerkalianPembagian> {
 
     final kapasitas = stok ~/ rak; // Pembagian bulat (~/)
     final sisa = stok % rak; // Modulo / Sisa Bagi (%)
+    final presisi = stok / rak; // Nilai Rata-rata Pembagian Desimal
 
     setState(() {
       _hasilPembagian =
-          "Kapasitas per Rak : $kapasitas unit/rak\nSisa Stok (Modulo): $sisa unit belum masuk rak.";
+          "Total Stok Barang : $stok unit\n"
+          "Dibagi ke         : $rak rak penyimpanan\n"
+          "Kapasitas per Rak : $kapasitas unit per rak (merata)\n"
+          "Sisa Stok (Modulo): $sisa unit (belum tertampung di rak)\n"
+          "Nilai Rata-rata   : ${presisi.toStringAsFixed(2)} unit/rak";
     });
   }
 
@@ -122,10 +128,11 @@ class _HalamanPerkalianPembagianState extends State<HalamanPerkalianPembagian> {
                         decoration: BoxDecoration(
                           color: Colors.blue.shade50,
                           borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.blue.shade200),
                         ),
                         child: Text(
                           _hasilPerkalian,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
+                          style: const TextStyle(fontWeight: FontWeight.w600, height: 1.4),
                         ),
                       ),
                     ],
@@ -185,10 +192,11 @@ class _HalamanPerkalianPembagianState extends State<HalamanPerkalianPembagian> {
                         decoration: BoxDecoration(
                           color: Colors.teal.shade50,
                           borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.teal.shade200),
                         ),
                         child: Text(
                           _hasilPembagian,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
+                          style: const TextStyle(fontWeight: FontWeight.w600, height: 1.4),
                         ),
                       ),
                     ],

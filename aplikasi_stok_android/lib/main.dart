@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'beranda.dart';
+import 'main_navigation_screen.dart';
+import 'session_manager.dart';
+import 'database_helper.dart';
+import 'data_gudang.dart';
 
-void main() {
+void main() async {
+  // Memastikan binding Flutter diinisialisasi sebelum mengakses SharedPreferences / SQLite
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const AplikasiStokApp());
 }
 
@@ -12,18 +17,72 @@ class AplikasiStokApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Aplikasi Stok Gudang',
+      title: 'WarehouseSmart',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const HalamanLogin(),
+      // Cek sesi otomatis saat startup (Auto-Login)
+      home: const PemeriksaSesiStartup(),
     );
   }
 }
 
-/// Halaman Login (Kriteria 1)
+/// Widget untuk memeriksa sesi pengguna saat aplikasi pertama kali dibuka
+class PemeriksaSesiStartup extends StatefulWidget {
+  const PemeriksaSesiStartup({super.key});
+
+  @override
+  State<PemeriksaSesiStartup> createState() => _PemeriksaSesiStartupState();
+}
+
+class _PemeriksaSesiStartupState extends State<PemeriksaSesiStartup> {
+  @override
+  void initState() {
+    super.initState();
+    _cekSesi();
+  }
+
+  Future<void> _cekSesi() async {
+    final sudahLogin = await SessionManager.cekSudahLogin();
+
+    if (!mounted) return;
+
+    if (sudahLogin) {
+      final username = await SessionManager.ambilUsername();
+      final nama = await SessionManager.ambilNama();
+
+      // Langsung menuju Beranda jika sesi aktif
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainNavigationScreen(
+            username: username,
+            namaLengkap: nama,
+          ),
+        ),
+      );
+    } else {
+      // Ke Halaman Login jika belum login
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HalamanLogin()),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+}
+
+/// Halaman Login (Kriteria 1 & Manajemen Sesi)
 class HalamanLogin extends StatefulWidget {
   const HalamanLogin({super.key});
 
@@ -36,11 +95,11 @@ class _HalamanLoginState extends State<HalamanLogin> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  // Kredensial Login Default
-  final String _usernameBenar = "admin";
-  final String _passwordBenar = "admin123";
+  bool _obscurePassword = true;
+  bool _isLoading = false;
 
-  void _prosesLogin() {
+  /// Memproses otentikasi login
+  Future<void> _prosesLogin() async {
     final username = _usernameController.text.trim();
     final password = _passwordController.text.trim();
 
@@ -51,16 +110,60 @@ class _HalamanLoginState extends State<HalamanLogin> {
       return;
     }
 
-    if (username == _usernameBenar && password == _passwordBenar) {
-      // Login Berhasil -> Masuk ke Menu Utama (Beranda)
+    setState(() => _isLoading = true);
+
+    String namaLengkap = "";
+    String role = "Staff Gudang";
+    bool loginValid = false;
+
+    // 1. Cek terhadap database SQLite
+    try {
+      final userDB = await DatabaseHelper.instance.login(username, password);
+      if (userDB != null) {
+        loginValid = true;
+        namaLengkap = userDB['nama_lengkap'] ?? username;
+        role = userDB['role'] ?? "Staff Gudang";
+      }
+    } catch (_) {
+      // Abaikan jika SQLite sedang inisialisasi awal
+    }
+
+    // 2. Cek terhadap daftar bawaan di DataGudang jika belum valid
+    if (!loginValid) {
+      for (var u in DataGudang.daftarPengguna) {
+        if (u['username']!.toLowerCase() == username.toLowerCase() &&
+            u['password'] == password) {
+          loginValid = true;
+          namaLengkap = u['nama']!;
+          role = u['role']!;
+          break;
+        }
+      }
+    }
+
+    setState(() => _isLoading = false);
+
+    if (loginValid) {
+      // Simpan status sesi ke SharedPreferences
+      await SessionManager.simpanSesi(
+        username: username,
+        nama: namaLengkap,
+        role: role,
+      );
+
+      if (!mounted) return;
+
+      // Navigasi ke Wrapper Halaman Utama
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HalamanBeranda(username: username),
+          builder: (context) => MainNavigationScreen(
+            username: username,
+            namaLengkap: namaLengkap,
+          ),
         ),
       );
     } else {
-      // Login Gagal
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Username atau password salah!"),
@@ -89,25 +192,26 @@ class _HalamanLoginState extends State<HalamanLogin> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Icon Header
-                  const Icon(
+                  Icon(
                     Icons.warehouse_rounded,
                     size: 64,
-                    color: Colors.blue,
+                    color: Colors.blue.shade800,
                   ),
                   const SizedBox(height: 12),
 
                   // Judul Aplikasi
                   const Text(
-                    "Aplikasi Manajemen Gudang",
+                    "WarehouseSmart",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
                     ),
                   ),
                   const SizedBox(height: 4),
                   const Text(
-                    "Tugas 2 - Pemrograman Mobile",
+                    "Sistem Manajemen Gudang & Utilitas - Tugas 2",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey, fontSize: 13),
                   ),
@@ -125,30 +229,46 @@ class _HalamanLoginState extends State<HalamanLogin> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Input Password
+                  // Input Password dengan Toggle Lihat Sandi
                   TextField(
                     controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
+                    obscureText: _obscurePassword,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
                       labelText: "Password",
-                      prefixIcon: Icon(Icons.lock),
+                      prefixIcon: const Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
+                      ),
                     ),
                   ),
 
                   const SizedBox(height: 12),
 
-                  // Petunjuk Akun Demo
+                  // Petunjuk Akun Demo (Diselaraskan dengan aplikasi_stok)
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: Colors.blue.shade50,
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.blue.shade200),
                     ),
                     child: const Text(
-                      "Petunjuk Login Demo:\nUsername: admin  |  Password: admin123",
+                      "Petunjuk Login Demo:\n"
+                      "• admin / admin123 (Super Admin)\n"
+                      "• user / user123 (Staff Gudang)\n"
+                      "• wilda / password123 (Lead Dev)",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 12, color: Colors.blue),
+                      style: TextStyle(fontSize: 12, color: Colors.blue, height: 1.4),
                     ),
                   ),
 
@@ -157,18 +277,30 @@ class _HalamanLoginState extends State<HalamanLogin> {
                   // Tombol Login
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Colors.blue.shade800,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onPressed: _prosesLogin,
-                    child: const Text(
-                      "LOGIN MASUK",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
+                    onPressed: _isLoading ? null : _prosesLogin,
+                    child: _isLoading
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : const Text(
+                            "LOGIN MASUK",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
                   ),
                 ],
               ),

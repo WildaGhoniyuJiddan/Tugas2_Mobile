@@ -3,6 +3,7 @@ import 'data_gudang.dart';
 
 /// Halaman Cek Bilangan Ganjil / Genap (Kriteria 5)
 /// Studi Kasus: Analisis Sifat Stok Barang Gudang untuk Logistik Display & Bundling
+/// Diselaraskan 100% dengan modul CLI aplikasi_stok
 class HalamanGanjilGenap extends StatefulWidget {
   const HalamanGanjilGenap({super.key});
 
@@ -91,8 +92,8 @@ class _HalamanGanjilGenapState extends State<HalamanGanjilGenap> {
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
-                      Text("Kuantitas Stok: $stok ${barangDipilih["satuan"]}"),
-                      Text("Rumus: $stok % 2 = ${stok % 2}"),
+                      Text("Jumlah Stok   : $stok ${barangDipilih["satuan"]}"),
+                      Text("Logika Rumus  : $stok % 2 = ${stok % 2}"),
                       const Divider(height: 24),
 
                       // Status Badge Ganjil / Genap
@@ -117,17 +118,21 @@ class _HalamanGanjilGenapState extends State<HalamanGanjilGenap> {
                         ],
                       ),
 
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 14),
                       const Text(
-                        "Analisis Logistik Gudang:",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        "ANALISIS OPERASIONAL GUDANG:",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 6),
                       Text(
                         isGenap
-                            ? "• Jumlah stok bernilai GENAP ($stok).\n• Cocok ditata berpasangan secara simetris di rak display.\n• Dapat langsung dibuat bundling 2-in-1 tanpa menyisakan item tercecer."
-                            : "• Jumlah stok bernilai GANJIL ($stok).\n• Jika dibuat paket bundle berpasangan, akan menyisakan 1 item.\n• Rekomendasi: Lakukan restock 1 item agar genap atau pisahkan 1 item sebagai tester/display.",
-                        style: TextStyle(color: Colors.grey.shade800),
+                            ? "• Stok barang berjumlah GENAP ($stok).\n"
+                              "• Barang ini siap ditata secara simetris berpasangan di rak display.\n"
+                              "• Dapat langsung dibuat bundling 2-in-1 tanpa menyisakan item tercecer."
+                            : "• Stok barang berjumlah GANJIL ($stok).\n"
+                              "• Jika dikemas dalam paket bundle berpasangan, akan ada 1 ${barangDipilih["satuan"]} sisa.\n"
+                              "• Rekomendasi: Disarankan menambah restock 1 ${barangDipilih["satuan"]} agar genap (${stok + 1}), atau jual 1 ${barangDipilih["satuan"]} sebagai barang sample/display terpisah.",
+                        style: TextStyle(color: Colors.grey.shade800, height: 1.4),
                       ),
                     ],
                   ),
