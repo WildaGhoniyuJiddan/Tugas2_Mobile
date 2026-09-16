@@ -1,8 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../logic/stopwatch_logic.dart';
+import '../styles/app_colors.dart';
+import '../styles/app_styles.dart';
+import '../styles/app_text_styles.dart';
 
 /// Halaman Fun Racking Challenge: Stopwatch Split-Screen Duel (Menu 10 & Tab Stopwatch)
-/// Konseptualisasi: Lomba kecepatan menata rak gudang antar 2 pekerja berhadiah bonus
+/// Konsep: Lomba kecepatan menata rak gudang antar 2 pekerja berhadiah bonus
+/// Menggunakan StopwatchLogic untuk pemisahan logika, dan AppStyles/AppColors untuk desain visual.
 class HalamanStopwatchChallenge extends StatefulWidget {
   const HalamanStopwatchChallenge({super.key});
 
@@ -54,21 +59,6 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
     super.dispose();
   }
 
-  /// Format stopwatch ke format Jam:Menit:Detik.Milidetik (00:00:00.00)
-  String _formatWaktu(int milliseconds) {
-    int ratusan = (milliseconds / 10).truncate() % 100;
-    int detik = (milliseconds / 1000).truncate() % 60;
-    int menit = (milliseconds / (1000 * 60)).truncate() % 60;
-    int jam = (milliseconds / (1000 * 60 * 60)).truncate();
-
-    String sJam = jam.toString().padLeft(2, '0');
-    String sMenit = menit.toString().padLeft(2, '0');
-    String sDetik = detik.toString().padLeft(2, '0');
-    String sRatusan = ratusan.toString().padLeft(2, '0');
-
-    return "$sJam:$sMenit:$sDetik.$sRatusan";
-  }
-
   /// Tombol Mulai Duel Bersama (3.. 2.. 1.. GO!)
   void _mulaiDuelBersama() {
     setState(() {
@@ -99,7 +89,7 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
   void _catatRak1() {
     if (_stopwatch1.isRunning) {
       setState(() {
-        final lapTime = _formatWaktu(_stopwatch1.elapsedMilliseconds);
+        final lapTime = StopwatchLogic.formatWaktu(_stopwatch1.elapsedMilliseconds);
         _laps1.insert(0, "Rak #${_laps1.length + 1}: $lapTime");
       });
     }
@@ -109,44 +99,35 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
   void _catatRak2() {
     if (_stopwatch2.isRunning) {
       setState(() {
-        final lapTime = _formatWaktu(_stopwatch2.elapsedMilliseconds);
+        final lapTime = StopwatchLogic.formatWaktu(_stopwatch2.elapsedMilliseconds);
         _laps2.insert(0, "Rak #${_laps2.length + 1}: $lapTime");
       });
     }
   }
 
-  /// Memeriksa pemenang saat kedua pekerja selesai
+  /// Memeriksa pemenang saat kedua pekerja selesai menggunakan StopwatchLogic
   void _cekPemenang() {
     if (!_stopwatch1.isRunning &&
         !_stopwatch2.isRunning &&
         _stopwatch1.elapsedMilliseconds > 0 &&
         _stopwatch2.elapsedMilliseconds > 0) {
-      final t1 = _stopwatch1.elapsedMilliseconds;
-      final t2 = _stopwatch2.elapsedMilliseconds;
-      final selisihDtk = ((t1 - t2).abs() / 1000).toStringAsFixed(2);
-
-      if (t1 < t2) {
-        _pesanPemenang =
-            "🏆 SELAMAT! ${_namaCtrl1.text} MENANG!\n"
-            "Lebih cepat $selisihDtk detik dibanding lawannya.\n"
-            "🎁 Berhak Mendapatkan Bonus Penataan Rak Gudang!";
-      } else if (t2 < t1) {
-        _pesanPemenang =
-            "🏆 SELAMAT! ${_namaCtrl2.text} MENANG!\n"
-            "Lebih cepat $selisihDtk detik dibanding lawannya.\n"
-            "🎁 Berhak Mendapatkan Bonus Penataan Rak Gudang!";
-      } else {
-        _pesanPemenang = "🤝 HASIL SERI! Kedua pekerja selesai tepat bersamaan!";
-      }
+      final hasil = StopwatchLogic.hitungPemenang(
+        waktu1: _stopwatch1.elapsedMilliseconds,
+        waktu2: _stopwatch2.elapsedMilliseconds,
+        namaPekerja1: _namaCtrl1.text,
+        namaPekerja2: _namaCtrl2.text,
+      );
+      _pesanPemenang = hasil['pesan'];
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text("Fun Racking Challenge"),
-        backgroundColor: Colors.indigo.shade800,
+        title: const Text("Fun Racking Challenge", style: AppTextStyles.appBarTitle),
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         actions: [
           // Toggle Split-Screen / Single Mode
@@ -183,7 +164,7 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
                       style: const TextStyle(
                         fontSize: 90,
                         fontWeight: FontWeight.bold,
-                        color: Colors.amber,
+                        color: AppColors.secondary,
                       ),
                     ),
                     const Text(
@@ -212,11 +193,11 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
         // Panel Atas: Pekerja 1
         Expanded(
           child: Container(
-            color: Colors.amber.shade50,
+            color: AppColors.secondaryLight,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: _buildPanelPekerja(
               nomor: 1,
-              warnaTema: Colors.amber.shade800,
+              warnaTema: AppColors.secondary,
               namaCtrl: _namaCtrl1,
               stopwatch: _stopwatch1,
               laps: _laps1,
@@ -233,29 +214,35 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
 
         // Divider Sentral: Tombol Mulai Duel Bersama & Banner Pemenang
         Container(
-          color: Colors.indigo.shade900,
+          color: AppColors.primaryDark,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                "⚡ DUEL MODE",
-                style: TextStyle(
-                  color: Colors.amber,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13,
-                ),
+              const Row(
+                children: [
+                  Icon(Icons.bolt, color: AppColors.secondary, size: 18),
+                  SizedBox(width: 4),
+                  Text(
+                    "DUEL RAK",
+                    style: TextStyle(
+                      color: AppColors.secondary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
+                  ),
+                ],
               ),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
+                  backgroundColor: AppColors.secondary,
                   foregroundColor: Colors.black,
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 ),
                 onPressed: _mulaiDuelBersama,
                 icon: const Icon(Icons.flash_on, size: 18),
                 label: const Text(
-                  "MULAI DUEL BERSAMA",
+                  "MULAI BERSAMA",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                 ),
               ),
@@ -280,7 +267,7 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
         if (_pesanPemenang != null)
           Container(
             width: double.infinity,
-            color: Colors.green.shade700,
+            color: AppColors.success,
             padding: const EdgeInsets.all(10),
             child: Text(
               _pesanPemenang!,
@@ -296,11 +283,11 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
         // Panel Bawah: Pekerja 2
         Expanded(
           child: Container(
-            color: Colors.blue.shade50,
+            color: AppColors.primaryLight,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: _buildPanelPekerja(
               nomor: 2,
-              warnaTema: Colors.blue.shade800,
+              warnaTema: AppColors.primary,
               namaCtrl: _namaCtrl2,
               stopwatch: _stopwatch2,
               laps: _laps2,
@@ -327,7 +314,7 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
     required VoidCallback onLap,
     required VoidCallback onStopTapped,
   }) {
-    final waktuTeks = _formatWaktu(stopwatch.elapsedMilliseconds);
+    final waktuTeks = StopwatchLogic.formatWaktu(stopwatch.elapsedMilliseconds);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -368,11 +355,7 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
         // Display Digital Waktu
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          decoration: BoxDecoration(
-            color: Colors.black87,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: warnaTema, width: 2),
-          ),
+          decoration: AppStyles.digitalBoxDecoration(borderColor: warnaTema),
           child: Text(
             waktuTeks,
             style: const TextStyle(
@@ -392,7 +375,7 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
             // Start / Stop
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                backgroundColor: stopwatch.isRunning ? Colors.red : Colors.green,
+                backgroundColor: stopwatch.isRunning ? AppColors.danger : AppColors.success,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               ),
@@ -413,7 +396,7 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
             // Catat Rak (Lap)
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.indigo,
+                backgroundColor: AppColors.primaryDark,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               ),
@@ -441,7 +424,7 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
 
         // Riwayat Lap Ringkas
         if (laps.isNotEmpty) ...[
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           SizedBox(
             height: 38,
             child: ListView.builder(
@@ -453,12 +436,12 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: Colors.grey.shade300),
+                  border: Border.all(color: AppColors.border),
                 ),
                 child: Center(
                   child: Text(
                     laps[idx],
-                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.textDark),
                   ),
                 ),
               ),
@@ -473,7 +456,7 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
   // TAMPILAN SINGLE MODE (1 STOPWATCH)
   // ==========================================================
   Widget _buildSingleScreenView() {
-    final waktuTeks = _formatWaktu(_stopwatch1.elapsedMilliseconds);
+    final waktuTeks = StopwatchLogic.formatWaktu(_stopwatch1.elapsedMilliseconds);
 
     return Padding(
       padding: const EdgeInsets.all(20),
@@ -482,32 +465,23 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
         children: [
           const Text(
             "Pencatat Waktu Operasional Gudang (Single Mode)",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.textDark),
           ),
           const SizedBox(height: 8),
-          Text(
+          const Text(
             "Gunakan untuk mengukur efisiensi penataan rak atau pemindahan palet secara mandiri.",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+            style: TextStyle(color: AppColors.textMuted, fontSize: 13),
           ),
           const SizedBox(height: 24),
 
           // Display Digital Besar
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            decoration: BoxDecoration(
-              color: Colors.black87,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.blue, width: 3),
-            ),
+            decoration: AppStyles.digitalBoxDecoration(borderColor: AppColors.primary),
             child: Text(
               waktuTeks,
-              style: const TextStyle(
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                fontFamily: 'monospace',
-              ),
+              style: AppTextStyles.digitalClockLarge,
             ),
           ),
           const SizedBox(height: 24),
@@ -518,7 +492,7 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
             children: [
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: _stopwatch1.isRunning ? Colors.red : Colors.green,
+                  backgroundColor: _stopwatch1.isRunning ? AppColors.danger : AppColors.success,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 ),
@@ -537,7 +511,7 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
               const SizedBox(width: 12),
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.indigo,
+                  backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 ),
@@ -568,18 +542,20 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
               alignment: Alignment.centerLeft,
               child: Text(
                 "Catatan Waktu per Rak:",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: AppColors.textDark),
               ),
             ),
             const SizedBox(height: 8),
             Expanded(
               child: ListView.builder(
                 itemCount: _laps1.length,
-                itemBuilder: (context, idx) => Card(
+                itemBuilder: (context, idx) => Container(
+                  margin: const EdgeInsets.only(bottom: 6),
+                  decoration: AppStyles.cardBoxDecoration(),
                   child: ListTile(
                     dense: true,
-                    leading: const Icon(Icons.timer_outlined, color: Colors.indigo),
-                    title: Text(_laps1[idx]),
+                    leading: const Icon(Icons.timer_outlined, color: AppColors.primary),
+                    title: Text(_laps1[idx], style: const TextStyle(fontWeight: FontWeight.w600)),
                   ),
                 ),
               ),

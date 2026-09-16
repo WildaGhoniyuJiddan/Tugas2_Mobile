@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'data_gudang.dart';
+import '../data_gudang.dart';
+import '../styles/app_colors.dart';
+import '../styles/app_styles.dart';
+import '../styles/app_text_styles.dart';
 
-/// Halaman Input Barang Baru (Menu 6)
-/// Studi Kasus: Pendaftaran Barang Baru ke Database Gudang
+/// Halaman Input Barang Baru Cepat (Menu 6)
+/// Menambahkan barang ke memori runtime dengan validasi dan styling terpusat (Lavender).
 class HalamanInputBarang extends StatefulWidget {
   const HalamanInputBarang({super.key});
 
@@ -45,7 +48,7 @@ class _HalamanInputBarangState extends State<HalamanInputBarang> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text("Peringatan Duplikasi"),
+          title: const Text("Peringatan Duplikasi", style: TextStyle(color: AppColors.warning, fontWeight: FontWeight.bold)),
           content: Text(
             "Barang dengan nama '$nama' sudah terdaftar di database gudang. Apakah Anda tetap ingin memproses pendaftaran?",
           ),
@@ -55,6 +58,7 @@ class _HalamanInputBarangState extends State<HalamanInputBarang> {
               child: const Text("Batal"),
             ),
             ElevatedButton(
+              style: AppStyles.primaryButton,
               onPressed: () {
                 Navigator.pop(context);
                 _simpanBarang(nama, satuan, stokAwal);
@@ -103,9 +107,10 @@ class _HalamanInputBarangState extends State<HalamanInputBarang> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text("Input Barang Baru (Database)"),
-        backgroundColor: Colors.blue,
+        title: const Text("Input Barang Baru (Memori)", style: AppTextStyles.appBarTitle),
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -114,88 +119,77 @@ class _HalamanInputBarangState extends State<HalamanInputBarang> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Card Form Input
-            Card(
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Formulir Input Barang Baru",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+            Container(
+              decoration: AppStyles.cardBoxDecoration(),
+              padding: const EdgeInsets.all(18),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Formulir Input Barang Baru",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryDark,
                     ),
-                    const Text(
-                      "Daftarkan item barang baru ke dalam database stok gudang",
-                      style: TextStyle(color: Colors.grey, fontSize: 13),
-                    ),
-                    const Divider(height: 24),
+                  ),
+                  const Text(
+                    "Daftarkan item barang baru ke dalam daftar cepat inventaris",
+                    style: TextStyle(color: AppColors.textMuted, fontSize: 13),
+                  ),
+                  const Divider(height: 24),
 
-                    // Input 1: Nama Barang
-                    TextField(
-                      controller: _namaController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Nama Barang Baru",
-                        hintText: "Contoh: Gula Pasir Premium 1kg",
-                        prefixIcon: Icon(Icons.inventory_2_outlined),
-                      ),
+                  // Input 1: Nama Barang
+                  TextField(
+                    controller: _namaController,
+                    decoration: AppStyles.inputDecoration(
+                      labelText: "Nama Barang Baru",
+                      hintText: "Contoh: Gula Pasir Premium 1kg",
+                      prefixIcon: Icons.inventory_2_outlined,
                     ),
-                    const SizedBox(height: 12),
+                  ),
+                  const SizedBox(height: 12),
 
-                    // Input 2: Satuan Barang
-                    TextField(
-                      controller: _satuanController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Satuan Barang",
-                        hintText: "Contoh: pcs, kg, pouch, box, karung",
-                        prefixIcon: Icon(Icons.category_outlined),
-                      ),
+                  // Input 2: Satuan Barang
+                  TextField(
+                    controller: _satuanController,
+                    decoration: AppStyles.inputDecoration(
+                      labelText: "Satuan Barang",
+                      hintText: "Contoh: pcs, kg, pouch, box, karung",
+                      prefixIcon: Icons.category_outlined,
                     ),
-                    const SizedBox(height: 12),
+                  ),
+                  const SizedBox(height: 12),
 
-                    // Input 3: Stok Awal
-                    TextField(
-                      controller: _stokController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Stok Awal Barang",
-                        hintText: "Contoh: 20",
-                        prefixIcon: Icon(Icons.numbers_outlined),
-                      ),
+                  // Input 3: Stok Awal
+                  TextField(
+                    controller: _stokController,
+                    keyboardType: TextInputType.number,
+                    decoration: AppStyles.inputDecoration(
+                      labelText: "Stok Awal Barang",
+                      hintText: "Contoh: 20",
+                      prefixIcon: Icons.numbers_outlined,
                     ),
-                    const SizedBox(height: 16),
+                  ),
+                  const SizedBox(height: 18),
 
-                    // Tombol Submit
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red.shade600,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                        ),
-                        onPressed: _prosesTambahBarang,
-                        icon: const Icon(Icons.add_box),
-                        label: const Text(
-                          "Daftarkan Barang Baru",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                  // Tombol Submit
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      style: AppStyles.primaryButton,
+                      onPressed: _prosesTambahBarang,
+                      icon: const Icon(Icons.add_box),
+                      label: const Text(
+                        "Daftarkan Barang Baru",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
 
@@ -204,7 +198,7 @@ class _HalamanInputBarangState extends State<HalamanInputBarang> {
             // Header List Barang Saat Ini
             Text(
               "Daftar Barang Gudang Saat Ini (${DataGudang.daftarBarang.length} item):",
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primaryDark),
             ),
             const SizedBox(height: 8),
 
@@ -213,7 +207,7 @@ class _HalamanInputBarangState extends State<HalamanInputBarang> {
               const Center(
                 child: Padding(
                   padding: EdgeInsets.all(24),
-                  child: Text("Belum ada barang di database gudang."),
+                  child: Text("Belum ada barang di database gudang.", style: TextStyle(color: AppColors.textMuted)),
                 ),
               )
             else
@@ -223,39 +217,40 @@ class _HalamanInputBarangState extends State<HalamanInputBarang> {
                 itemCount: DataGudang.daftarBarang.length,
                 itemBuilder: (context, index) {
                   final barang = DataGudang.daftarBarang[index];
-                  return Card(
+                  return Container(
                     margin: const EdgeInsets.only(bottom: 8),
+                    decoration: AppStyles.cardBoxDecoration(),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: Colors.blue.shade100,
+                        backgroundColor: AppColors.primaryLight,
                         child: Text(
                           "#${barang["id"]}",
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue,
+                            color: AppColors.primary,
                           ),
                         ),
                       ),
                       title: Text(
                         barang["nama"],
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textDark),
                       ),
-                      subtitle: Text("Satuan: ${barang["satuan"]}"),
+                      subtitle: Text("Satuan: ${barang["satuan"]}", style: const TextStyle(color: AppColors.textMuted)),
                       trailing: Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 10,
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.green.shade50,
+                          color: AppColors.successLight,
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.green.shade300),
+                          border: Border.all(color: AppColors.success),
                         ),
                         child: Text(
                           "Stok: ${barang["stok"]} ${barang["satuan"]}",
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.green.shade800,
+                            color: AppColors.success,
                           ),
                         ),
                       ),

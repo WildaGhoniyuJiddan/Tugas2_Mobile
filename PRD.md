@@ -41,7 +41,7 @@ Untuk memenuhi kriteria **Tugas 2 Pemrograman Aplikasi Mobile**, seluruh fitur y
 
 ### 1.2 Tema Aplikasi
 **Tema: "Smart Logistics & Warehouse Inventory Management" (Manajemen Stok & Logistik Gudang Cerdas).**
-Aplikasi menggunakan skema warna profesional logistik (*Industrial Steel Blue, Warehouse Amber, Clean Slate*), desain modern Material Design 3, dan akses *offline-first*.
+Aplikasi menggunakan skema warna profesional bernuansa **Lavender** yang modern, elegan, dan bersih (*Deep Lavender #7E57C2, Soft Lavender Surface, Warehouse Amber #FFA000, Teal Logistics #00897B*), desain Material Design 3, dan akses *offline-first*.
 
 ---
 
@@ -498,38 +498,48 @@ aplikasi_stok_android/
 ├── android/                             # Konfigurasi native Android
 ├── assets/                              # Gambar, logo, dan ikon
 ├── lib/
-│   ├── main.dart                        # Entry Point, Multi-provider, Inisialisasi DB SQLite & Cek Sesi
-│   │
-│   │   # --- BERKAS MODUL EKSISTING (DIPERTAHANKAN 100%) ---
-│   ├── beranda.dart                     # Halaman Menu Utama Terpadu (Menampilkan Menu Eksisting & Menu Baru)
+│   ├── main.dart                        # Entry Point, Multi-provider, Inisialisasi DB SQLite & Cek Sesi (Lavender Theme)
 │   ├── data_gudang.dart                 # Data Memori Awal & Informasi Anggota
-│   ├── data_kelompok.dart               # [Eksisting] Menu 1: Data Anggota Kelompok
-│   ├── penjumlahan_pengurangan.dart     # [Eksisting] Menu 2: Penjumlahan & Pengurangan Stok
-│   ├── perkalian_pembagian.dart         # [Eksisting] Menu 3: Perkalian & Pembagian Kapasitas Rak
-│   ├── ganjil_genap.dart                # [Eksisting] Menu 4: Cek Ganjil / Genap Stok
-│   ├── total_angka.dart                 # [Eksisting] Menu 5: Total Angka dalam Input
-│   ├── input_barang.dart                # [Eksisting] Menu 6: Input Barang Baru Cepat
 │   │
-│   │   # --- BERKAS MODUL BARU TUGAS 2 ---
-│   ├── db/
-│   │   ├── database_helper.dart         # Helper SQLite (Inisialisasi DB, Tabel, Operasi CRUD & Log)
-│   │   └── session_manager.dart         # Pengelola Sesi SharedPreferences (Login, Sesi, Logout)
-│   ├── models/
-│   │   ├── user_model.dart              # Model Data Akun Pengguna
-│   │   ├── item_model.dart              # Model Data Barang SQLite
-│   │   ├── log_model.dart               # Model Data Log Mutasi Stok
-│   │   └── receipt_model.dart           # Model Data Penerimaan Barang Masuk
+│   │   # --- 1. LAYER DESAIN & STYLING ("CSS") ---
+│   ├── styles/
+│   │   ├── app_colors.dart              # Palet Warna Terpusat (Primary Lavender #7E57C2, Amber, Teal, Status)
+│   │   ├── app_styles.dart              # Stylesheet Terpusat (BoxDecoration, ButtonStyle, InputDecoration)
+│   │   └── app_text_styles.dart         # Tipografi Terpusat (Header, Title, Monospace Digital Timer, Badge)
+│   │
+│   │   # --- 2. LAYER LOGIKA BISNIS & KOMPUTASI (LOGIC) ---
+│   ├── logic/
+│   │   ├── operasional_stok_logic.dart  # Logika Matematika Stok (+, -, *, /, %, total angka, digit)
+│   │   ├── penanggalan_logic.dart       # Algoritma Astronomis Hijriah, Weton Jawa & Neptu, Saka Bali & Wuku
+│   │   ├── kalkulator_umur_logic.dart   # Logika Anchor 00:00:00, Durasi Detil, Countdown Ultah & Evaluasi FIFO
+│   │   └── stopwatch_logic.dart         # Format Timer Digital (00:00:00.00) & Penentuan Pemenang Duel Rak
+│   │
+│   │   # --- 3. LAYER BASIS DATA & SESI (DATABASE) ---
+│   ├── database/
+│   │   ├── database_helper.dart         # SQLite Helper Persisten (Users, Items, Stock Logs, Inbound Receipts)
+│   │   └── session_manager.dart         # Pengelola Sesi Login SharedPreferences
+│   │
+│   │   # --- 4. LAYER ANTARMUKA / LAYAR (SCREENS) ---
 │   ├── screens/
-│   │   ├── main_navigation_screen.dart  # Wrapper Bottom Navigation Bar (3 Tab)
-│   │   ├── stopwatch_screen.dart        # Modul Fun Racking Challenge (Dual Split-Screen Stopwatch & Single Mode)
-│   │   ├── help_screen.dart             # Tab Bantuan & FAQ Dokumentasi
-│   │   ├── sqlite_inventory_screen.dart # Modul CRUD SQLite Lengkap & Audit Log Mutasi
-│   │   ├── goods_receipt_date_screen.dart # Modul Penanggalan Terima Barang (Hijriah, Weton, Saka Bali)
-│   │   └── age_calculator_screen.dart   # Modul Kalkulator Umur Detil (Input Tanggal Saja Mulai 00:00:00)
-│   └── utils/
-│       ├── hijri_converter.dart         # Algoritma Penanggalan Hijriah Ummul Qura
-│       ├── weton_converter.dart         # Algoritma Pasaran Pancawara & Perhitungan Neptu
-│       └── saka_bali_converter.dart     # Algoritma 30 Wuku & Sasih Saka Bali
+│   │   ├── auth/
+│   │   │   └── login_screen.dart        # Halaman Login (Lavender Theme)
+│   │   ├── main_navigation_screen.dart  # Wrapper Bottom Navigation Bar (Beranda, Stopwatch, Bantuan, Logout)
+│   │   ├── beranda_screen.dart          # Dashboard 10 Menu Terpadu dengan Gradien Banner Lavender
+│   │   ├── stopwatch_challenge_screen.dart # Layar Split-Screen Duel 2 Pekerja & Single Mode
+│   │   ├── penanggalan_barang_masuk_screen.dart # Layar Penanggalan Terima Barang Masuk
+│   │   ├── kalkulator_umur_screen.dart  # Layar Kalkulator Umur (Input Tanggal Saja Mulai 00:00:00, Live Ticker)
+│   │   ├── manajemen_stok_sqlite_screen.dart # Layar CRUD SQLite & Audit Log Mutasi Stok
+│   │   ├── data_kelompok_screen.dart    # [Eksisting] Menu 1: Profil Anggota Kelompok
+│   │   ├── penjumlahan_pengurangan_screen.dart # [Eksisting] Menu 2: Tambah & Kurang Stok
+│   │   ├── perkalian_pembagian_screen.dart # [Eksisting] Menu 3: Kali Box & Bagi Rak
+│   │   ├── ganjil_genap_screen.dart     # [Eksisting] Menu 4: Cek Sifat Angka Ganjil/Genap
+│   │   ├── total_angka_screen.dart      # [Eksisting] Menu 5: Total Angka & Akumulasi Digit
+│   │   ├── input_barang_screen.dart     # [Eksisting] Menu 6: Input Cepat Barang Baru
+│   │   └── bantuan_screen.dart          # Pusat Bantuan, Petunjuk Modul & FAQ
+├── test/
+│   ├── penanggalan_test.dart            # Pengujian Unit Konversi Kalender Budaya
+│   ├── logic_test.dart                  # Pengujian Unit Komputasi Stok, Umur, & Stopwatch
+│   └── widget_test.dart                 # Pengujian Widget Halaman Login
 ├── pubspec.yaml                         # Dependensi (sqflite, path, shared_preferences, intl)
 └── README.md                            # Dokumentasi Proyek
 ```

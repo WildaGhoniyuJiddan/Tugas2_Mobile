@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'database_helper.dart';
+import '../database/database_helper.dart';
+import '../styles/app_colors.dart';
+import '../styles/app_styles.dart';
+import '../styles/app_text_styles.dart';
 
 /// Halaman Manajemen Stok Gudang SQLite (Menu 7)
 /// Mengimplementasikan CRUD lengkap (Create, Read, Update, Delete) & Log Mutasi
-/// Berbasis basis data lokal SQLite (warehouse_smart.db)
+/// Berbasis basis data lokal SQLite (warehouse_smart.db) dengan styling AppStyles & AppColors (Lavender).
 class HalamanManajemenStokSQLite extends StatefulWidget {
   const HalamanManajemenStokSQLite({super.key});
 
@@ -79,40 +82,46 @@ class _HalamanManajemenStokSQLiteState
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text("Tambah Barang Baru ke SQLite"),
+        title: const Text("Tambah Barang Baru ke SQLite", style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryDark)),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: kodeCtrl,
-                decoration: const InputDecoration(labelText: "Kode Barang (SKU)"),
+                decoration: AppStyles.inputDecoration(labelText: "Kode Barang (SKU)"),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: namaCtrl,
-                decoration: const InputDecoration(labelText: "Nama Barang"),
+                decoration: AppStyles.inputDecoration(labelText: "Nama Barang"),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: kategoriCtrl,
-                decoration: const InputDecoration(labelText: "Kategori"),
+                decoration: AppStyles.inputDecoration(labelText: "Kategori"),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: stokCtrl,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: "Stok Awal"),
+                decoration: AppStyles.inputDecoration(labelText: "Stok Awal"),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: satuanCtrl,
-                decoration: const InputDecoration(labelText: "Satuan (pcs, kg, dll)"),
+                decoration: AppStyles.inputDecoration(labelText: "Satuan (pcs, kg, dll)"),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: hargaCtrl,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: "Harga Satuan (Rp)"),
+                decoration: AppStyles.inputDecoration(labelText: "Harga Satuan (Rp)"),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: rakCtrl,
-                decoration: const InputDecoration(labelText: "Lokasi Rak"),
+                decoration: AppStyles.inputDecoration(labelText: "Lokasi Rak"),
               ),
             ],
           ),
@@ -123,15 +132,15 @@ class _HalamanManajemenStokSQLiteState
             child: const Text("Batal"),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
-            ),
+            style: AppStyles.primaryButton,
             onPressed: () async {
               final nama = namaCtrl.text.trim();
               if (nama.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Nama barang wajib diisi!")),
+                  const SnackBar(
+                    content: Text("Nama barang wajib diisi!"),
+                    backgroundColor: AppColors.danger,
+                  ),
                 );
                 return;
               }
@@ -152,7 +161,10 @@ class _HalamanManajemenStokSQLiteState
               if (mounted) Navigator.pop(ctx);
               _muatData();
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Barang '$nama' berhasil disimpan ke SQLite!")),
+                SnackBar(
+                  content: Text("Barang '$nama' berhasil disimpan ke SQLite!"),
+                  backgroundColor: AppColors.success,
+                ),
               );
             },
             child: const Text("Simpan"),
@@ -175,31 +187,35 @@ class _HalamanManajemenStokSQLiteState
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text("Edit Barang: ${item['nama_barang']}"),
+        title: Text("Edit Barang: ${item['nama_barang']}", style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryDark)),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: namaCtrl,
-                decoration: const InputDecoration(labelText: "Nama Barang"),
+                decoration: AppStyles.inputDecoration(labelText: "Nama Barang"),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: kategoriCtrl,
-                decoration: const InputDecoration(labelText: "Kategori"),
+                decoration: AppStyles.inputDecoration(labelText: "Kategori"),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: satuanCtrl,
-                decoration: const InputDecoration(labelText: "Satuan"),
+                decoration: AppStyles.inputDecoration(labelText: "Satuan"),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: hargaCtrl,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: "Harga Satuan (Rp)"),
+                decoration: AppStyles.inputDecoration(labelText: "Harga Satuan (Rp)"),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: rakCtrl,
-                decoration: const InputDecoration(labelText: "Lokasi Rak"),
+                decoration: AppStyles.inputDecoration(labelText: "Lokasi Rak"),
               ),
             ],
           ),
@@ -210,10 +226,7 @@ class _HalamanManajemenStokSQLiteState
             child: const Text("Batal"),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
-            ),
+            style: AppStyles.primaryButton,
             onPressed: () async {
               final nama = namaCtrl.text.trim();
               final harga = double.tryParse(hargaCtrl.text.trim()) ?? 0.0;
@@ -230,7 +243,10 @@ class _HalamanManajemenStokSQLiteState
               if (mounted) Navigator.pop(ctx);
               _muatData();
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Data barang berhasil diupdate!")),
+                const SnackBar(
+                  content: Text("Data barang berhasil diupdate!"),
+                  backgroundColor: AppColors.success,
+                ),
               );
             },
             child: const Text("Update"),
@@ -247,7 +263,7 @@ class _HalamanManajemenStokSQLiteState
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text("Konfirmasi Hapus"),
+        title: const Text("Konfirmasi Hapus", style: TextStyle(color: AppColors.danger, fontWeight: FontWeight.bold)),
         content: Text("Apakah Anda yakin ingin menghapus '${item['nama_barang']}' dari SQLite?"),
         actions: [
           TextButton(
@@ -255,16 +271,16 @@ class _HalamanManajemenStokSQLiteState
             child: const Text("Batal"),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
-            ),
+            style: AppStyles.dangerButton,
             onPressed: () async {
               await DatabaseHelper.instance.hapusBarang(item['id']);
               if (mounted) Navigator.pop(ctx);
               _muatData();
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Barang '${item['nama_barang']}' telah dihapus.")),
+                SnackBar(
+                  content: Text("Barang '${item['nama_barang']}' telah dihapus."),
+                  backgroundColor: AppColors.danger,
+                ),
               );
             },
             child: const Text("Hapus"),
@@ -286,31 +302,35 @@ class _HalamanManajemenStokSQLiteState
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(isMasuk ? "Tambah Stok Masuk (+)" : "Kurang Stok Keluar (-)"),
+        title: Text(
+          isMasuk ? "Tambah Stok Masuk (+)" : "Kurang Stok Keluar (-)",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: isMasuk ? AppColors.success : AppColors.warning,
+          ),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Barang: ${item['nama_barang']}",
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textDark),
             ),
-            Text("Stok Saat Ini: ${item['stok']} ${item['satuan']}"),
-            const SizedBox(height: 12),
+            Text("Stok Saat Ini: ${item['stok']} ${item['satuan']}", style: const TextStyle(color: AppColors.textMuted)),
+            const SizedBox(height: 14),
             TextField(
               controller: jumlahCtrl,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: AppStyles.inputDecoration(
                 labelText: isMasuk ? "Jumlah Masuk (+)" : "Jumlah Keluar (-)",
-                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: ketCtrl,
-              decoration: const InputDecoration(
+              decoration: AppStyles.inputDecoration(
                 labelText: "Keterangan / Alasan Mutasi",
-                border: OutlineInputBorder(),
               ),
             ),
           ],
@@ -321,15 +341,15 @@ class _HalamanManajemenStokSQLiteState
             child: const Text("Batal"),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: isMasuk ? Colors.green : Colors.orange,
-              foregroundColor: Colors.white,
-            ),
+            style: isMasuk ? AppStyles.successButton : AppStyles.warningButton,
             onPressed: () async {
               final jumlah = int.tryParse(jumlahCtrl.text.trim()) ?? 0;
               if (jumlah <= 0) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Jumlah mutasi harus lebih dari 0!")),
+                  const SnackBar(
+                    content: Text("Jumlah mutasi harus lebih dari 0!"),
+                    backgroundColor: AppColors.danger,
+                  ),
                 );
                 return;
               }
@@ -347,6 +367,7 @@ class _HalamanManajemenStokSQLiteState
                 _muatData();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
+                    backgroundColor: isMasuk ? AppColors.success : AppColors.warning,
                     content: Text(
                       isMasuk
                           ? "Berhasil menambah $jumlah ${item['satuan']}!"
@@ -358,7 +379,7 @@ class _HalamanManajemenStokSQLiteState
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text("Gagal: Stok di gudang tidak mencukupi!"),
-                    backgroundColor: Colors.red,
+                    backgroundColor: AppColors.danger,
                   ),
                 );
               }
@@ -373,9 +394,10 @@ class _HalamanManajemenStokSQLiteState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text("Manajemen Stok SQLite"),
-        backgroundColor: Colors.blue.shade800,
+        title: const Text("Manajemen Stok SQLite", style: AppTextStyles.appBarTitle),
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         actions: [
           IconButton(
@@ -386,17 +408,17 @@ class _HalamanManajemenStokSQLiteState
         ],
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: Colors.amber,
+          indicatorColor: AppColors.secondary,
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
           tabs: [
-            Tab(icon: const Icon(Icons.inventory_2), text: "Daftar Stok (${_daftarBarang.length})"),
-            Tab(icon: const Icon(Icons.history), text: "Riwayat Log (${_daftarLog.length})"),
+            Tab(icon: const Icon(Icons.inventory_2_outlined), text: "Daftar Stok (${_daftarBarang.length})"),
+            Tab(icon: const Icon(Icons.history_outlined), text: "Riwayat Log (${_daftarLog.length})"),
           ],
         ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
           : TabBarView(
               controller: _tabController,
               children: [
@@ -405,7 +427,7 @@ class _HalamanManajemenStokSQLiteState
               ],
             ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue.shade800,
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         tooltip: "Tambah Barang Baru",
         onPressed: _tampilkanDialogTambah,
@@ -427,22 +449,19 @@ class _HalamanManajemenStokSQLiteState
           padding: const EdgeInsets.all(12),
           child: TextField(
             controller: _searchController,
-            decoration: InputDecoration(
-              hintText: "Cari nama barang, kode SKU, atau kategori...",
-              prefixIcon: const Icon(Icons.search),
+            decoration: AppStyles.inputDecoration(
+              labelText: "Cari Barang",
+              hintText: "Cari nama barang, SKU, atau kategori...",
+              prefixIcon: Icons.search,
               suffixIcon: _kataKunci.isNotEmpty
                   ? IconButton(
-                      icon: const Icon(Icons.clear),
+                      icon: const Icon(Icons.clear, color: AppColors.textMuted),
                       onPressed: () {
                         _searchController.clear();
                         setState(() => _kataKunci = "");
                       },
                     )
                   : null,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             ),
             onChanged: (val) {
               setState(() => _kataKunci = val);
@@ -456,7 +475,7 @@ class _HalamanManajemenStokSQLiteState
               ? const Center(
                   child: Text(
                     "Tidak ada data barang yang cocok.",
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(color: AppColors.textMuted),
                   ),
                 )
               : ListView.builder(
@@ -467,159 +486,144 @@ class _HalamanManajemenStokSQLiteState
                     final stok = item['stok'] as int;
 
                     // Status Warna Stok
-                    Color badgeColor = Colors.green;
+                    Color badgeColor = AppColors.success;
                     String badgeText = "Stok Aman";
                     if (stok <= 5) {
-                      badgeColor = Colors.red;
+                      badgeColor = AppColors.danger;
                       badgeText = "Kritis";
                     } else if (stok <= 20) {
-                      badgeColor = Colors.orange;
+                      badgeColor = AppColors.warning;
                       badgeText = "Menipis";
                     }
 
-                    return Card(
+                    return Container(
                       margin: const EdgeInsets.only(bottom: 10),
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Baris Atas: Kode SKU & Badge Status
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  item['kode_barang'] ?? "-",
-                                  style: TextStyle(
+                      decoration: AppStyles.cardBoxDecoration(),
+                      padding: const EdgeInsets.all(14),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Baris Atas: Kode SKU & Badge Status
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                item['kode_barang'] ?? "-",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.primary,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 3,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: badgeColor.withAlpha(25),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: badgeColor),
+                                ),
+                                child: Text(
+                                  badgeText,
+                                  style: AppTextStyles.badge(badgeColor),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+
+                          // Nama Barang
+                          Text(
+                            item['nama_barang'] ?? "",
+                            style: AppTextStyles.cardTitle,
+                          ),
+                          const SizedBox(height: 4),
+
+                          // Detail Info (Kategori, Lokasi Rak, Harga)
+                          Text(
+                            "Kategori: ${item['kategori']}  •  ${item['lokasi_rak']}",
+                            style: const TextStyle(
+                              color: AppColors.textMuted,
+                              fontSize: 12,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            "Harga: Rp ${item['harga_satuan']?.toStringAsFixed(0)} / ${item['satuan']}",
+                            style: const TextStyle(
+                              color: AppColors.primaryDark,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                            ),
+                          ),
+                          const Divider(height: 16),
+
+                          // Baris Bawah: Stok Aktif & Tombol Aksi Cepat
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Stok: $stok ${item['satuan']}",
+                                  style: const TextStyle(
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.blue.shade800,
-                                    fontSize: 12,
+                                    color: AppColors.textDark,
                                   ),
                                 ),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 3,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: badgeColor.withAlpha(30),
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(color: badgeColor),
-                                  ),
-                                  child: Text(
-                                    badgeText,
-                                    style: TextStyle(
-                                      color: badgeColor,
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-
-                            // Nama Barang
-                            Text(
-                              item['nama_barang'] ?? "",
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
                               ),
-                            ),
-                            const SizedBox(height: 4),
-
-                            // Detail Info (Kategori, Lokasi Rak, Harga)
-                            Row(
-                              children: [
-                                Text(
-                                  "Kategori: ${item['kategori']}  •  ${item['lokasi_rak']}",
-                                  style: TextStyle(
-                                    color: Colors.grey.shade700,
-                                    fontSize: 12,
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  // Tombol Mutasi Masuk (+)
+                                  IconButton(
+                                    visualDensity: VisualDensity.compact,
+                                    iconSize: 22,
+                                    padding: const EdgeInsets.all(4),
+                                    constraints: const BoxConstraints(),
+                                    icon: const Icon(Icons.add_circle, color: AppColors.success),
+                                    tooltip: "Tambah Stok Masuk",
+                                    onPressed: () => _tampilkanDialogMutasi(item, true),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              "Harga: Rp ${item['harga_satuan']?.toStringAsFixed(0)} / ${item['satuan']}",
-                              style: const TextStyle(
-                                color: Colors.indigo,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 13,
+                                  const SizedBox(width: 4),
+                                  // Tombol Mutasi Keluar (-)
+                                  IconButton(
+                                    visualDensity: VisualDensity.compact,
+                                    iconSize: 22,
+                                    padding: const EdgeInsets.all(4),
+                                    constraints: const BoxConstraints(),
+                                    icon: const Icon(Icons.remove_circle, color: AppColors.warning),
+                                    tooltip: "Kurang Stok Keluar",
+                                    onPressed: () => _tampilkanDialogMutasi(item, false),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  // Tombol Edit
+                                  IconButton(
+                                    visualDensity: VisualDensity.compact,
+                                    iconSize: 22,
+                                    padding: const EdgeInsets.all(4),
+                                    constraints: const BoxConstraints(),
+                                    icon: const Icon(Icons.edit, color: AppColors.primary),
+                                    tooltip: "Edit Rincian Barang",
+                                    onPressed: () => _tampilkanDialogEdit(item),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  // Tombol Hapus
+                                  IconButton(
+                                    visualDensity: VisualDensity.compact,
+                                    iconSize: 22,
+                                    padding: const EdgeInsets.all(4),
+                                    constraints: const BoxConstraints(),
+                                    icon: const Icon(Icons.delete_outline, color: AppColors.danger),
+                                    tooltip: "Hapus Barang",
+                                    onPressed: () => _konfirmasiHapus(item),
+                                  ),
+                                ],
                               ),
-                            ),
-                            const Divider(height: 16),
-
-                            // Baris Bawah: Stok Aktif & Tombol Aksi Cepat
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    "Stok: $stok ${item['satuan']}",
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    // Tombol Mutasi Masuk (+)
-                                    IconButton(
-                                      visualDensity: VisualDensity.compact,
-                                      iconSize: 22,
-                                      padding: const EdgeInsets.all(4),
-                                      constraints: const BoxConstraints(),
-                                      icon: const Icon(Icons.add_circle, color: Colors.green),
-                                      tooltip: "Tambah Stok Masuk",
-                                      onPressed: () => _tampilkanDialogMutasi(item, true),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    // Tombol Mutasi Keluar (-)
-                                    IconButton(
-                                      visualDensity: VisualDensity.compact,
-                                      iconSize: 22,
-                                      padding: const EdgeInsets.all(4),
-                                      constraints: const BoxConstraints(),
-                                      icon: const Icon(Icons.remove_circle, color: Colors.orange),
-                                      tooltip: "Kurang Stok Keluar",
-                                      onPressed: () => _tampilkanDialogMutasi(item, false),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    // Tombol Edit
-                                    IconButton(
-                                      visualDensity: VisualDensity.compact,
-                                      iconSize: 22,
-                                      padding: const EdgeInsets.all(4),
-                                      constraints: const BoxConstraints(),
-                                      icon: const Icon(Icons.edit, color: Colors.blue),
-                                      tooltip: "Edit Rincian Barang",
-                                      onPressed: () => _tampilkanDialogEdit(item),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    // Tombol Hapus
-                                    IconButton(
-                                      visualDensity: VisualDensity.compact,
-                                      iconSize: 22,
-                                      padding: const EdgeInsets.all(4),
-                                      constraints: const BoxConstraints(),
-                                      icon: const Icon(Icons.delete_outline, color: Colors.red),
-                                      tooltip: "Hapus Barang",
-                                      onPressed: () => _konfirmasiHapus(item),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
+                        ],
                       ),
                     );
                   },
@@ -637,7 +641,7 @@ class _HalamanManajemenStokSQLiteState
       return const Center(
         child: Text(
           "Belum ada catatan mutasi stok di SQLite.",
-          style: TextStyle(color: Colors.grey),
+          style: TextStyle(color: AppColors.textMuted),
         ),
       );
     }
@@ -649,23 +653,24 @@ class _HalamanManajemenStokSQLiteState
         final log = _daftarLog[index];
         final isMasuk = log['jenis_mutasi'] == 'MASUK';
 
-        return Card(
+        return Container(
           margin: const EdgeInsets.only(bottom: 8),
+          decoration: AppStyles.cardBoxDecoration(),
           child: ListTile(
             leading: CircleAvatar(
-              backgroundColor: isMasuk ? Colors.green.shade100 : Colors.orange.shade100,
+              backgroundColor: isMasuk ? AppColors.successLight : AppColors.warningLight,
               child: Icon(
                 isMasuk ? Icons.arrow_downward : Icons.arrow_upward,
-                color: isMasuk ? Colors.green.shade800 : Colors.orange.shade800,
+                color: isMasuk ? AppColors.success : AppColors.warning,
               ),
             ),
             title: Text(
               "${log['nama_barang']} (${isMasuk ? '+' : '-'}${log['jumlah']})",
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textDark),
             ),
             subtitle: Text(
               "Waktu: ${log['tanggal']}\nKet: ${log['keterangan'] ?? '-'}",
-              style: const TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
             ),
             isThreeLine: true,
           ),

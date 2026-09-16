@@ -1,70 +1,73 @@
 import 'package:flutter/material.dart';
+import '../styles/app_colors.dart';
+import '../styles/app_styles.dart';
+import '../styles/app_text_styles.dart';
 
-/// Halaman Pusat Bantuan & Dokumentasi (Tab 2 Bottom Navigation Bar)
-/// Memuat petunjuk lengkap pengoperasian seluruh menu dan FAQ aplikasi
+/// Halaman Pusat Bantuan & Dokumentasi (Tab 3 Bottom Navigation Bar)
+/// Memuat petunjuk lengkap pengoperasian seluruh modul dan FAQ aplikasi.
+/// Menggunakan styling terpusat AppStyles & AppColors (Tema Lavender).
 class HalamanBantuan extends StatelessWidget {
   const HalamanBantuan({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text("Pusat Bantuan & Panduan"),
-        backgroundColor: Colors.blue.shade800,
+        title: const Text("Pusat Bantuan & Panduan", style: AppTextStyles.appBarTitle),
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // Banner Panduan
-          Card(
-            color: Colors.blue.shade50,
-            shape: RoundedRectangleBorder(
+          // Banner Panduan Lavender
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.primaryLight,
               borderRadius: BorderRadius.circular(12),
-              side: BorderSide(color: Colors.blue.shade200),
+              border: Border.all(color: AppColors.lavenderAccent),
             ),
-            child: const Padding(
-              padding: EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Icon(Icons.help_outline, color: Colors.blue, size: 40),
-                  SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Panduan Penggunaan WarehouseSmart",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.blue,
-                          ),
+            padding: const EdgeInsets.all(16),
+            child: const Row(
+              children: [
+                Icon(Icons.help_outline, color: AppColors.primary, size: 40),
+                SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Panduan Penggunaan WarehouseSmart",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: AppColors.primaryDark,
                         ),
-                        SizedBox(height: 4),
-                        Text(
-                          "Pelajari seluruh fitur sistem stok, operasi matematika, dan utilitas penanggalan.",
-                          style: TextStyle(fontSize: 12, color: Colors.black87),
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        "Pelajari seluruh fitur sistem stok, operasi matematika, dan utilitas penanggalan.",
+                        style: TextStyle(fontSize: 12, color: AppColors.textDark),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 18),
           const Text(
             "Daftar Topik Bantuan:",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primaryDark),
           ),
           const SizedBox(height: 8),
 
           // 1. Akun Login & Sesi
           _buildItemBantuan(
             ikon: Icons.lock_outline,
-            warna: Colors.indigo,
+            warna: AppColors.primary,
             judul: "1. Autentikasi Akun & Manajemen Sesi",
             isi: "• Akun demo bawaan:\n"
                 "  - Username: 'admin' | Password: 'admin123'\n"
@@ -77,7 +80,7 @@ class HalamanBantuan extends StatelessWidget {
           // 2. Modul Eksisting (Menu 1-6)
           _buildItemBantuan(
             ikon: Icons.calculate_outlined,
-            warna: Colors.green,
+            warna: AppColors.success,
             judul: "2. Operasi Dasar & Modul Eksisting (Menu 1-6)",
             isi: "• Menu 1 (Data Kelompok): Menampilkan profil 4 mahasiswa pembuat aplikasi.\n"
                 "• Menu 2 (Penjumlahan & Pengurangan): Memilih barang dan mengubah stok masuk (+) atau keluar (-).\n"
@@ -90,7 +93,7 @@ class HalamanBantuan extends StatelessWidget {
           // 3. Modul SQLite (Menu 7)
           _buildItemBantuan(
             ikon: Icons.storage_outlined,
-            warna: Colors.blue,
+            warna: AppColors.primaryDark,
             judul: "3. Manajemen Stok SQLite Lengkap (Menu 7)",
             isi: "• Data tersimpan permanen di file SQLite lokal ('warehouse_smart.db').\n"
                 "• Tambah barang baru lewat tombol floating '+ Tambah Barang'.\n"
@@ -103,7 +106,7 @@ class HalamanBantuan extends StatelessWidget {
           // 4. Penanggalan Penerimaan Barang (Menu 8)
           _buildItemBantuan(
             ikon: Icons.calendar_month_outlined,
-            warna: Colors.teal,
+            warna: AppColors.accent,
             judul: "4. Penanggalan Terima Barang (Menu 8)",
             isi: "• Konsep: Saat barang masuk tiba di gudang, petugas mencatat tanggal kedatangan.\n"
                 "• Konversi Kalender Hijriah: Mengetahui hari Islam & momentum komoditas halal.\n"
@@ -115,7 +118,7 @@ class HalamanBantuan extends StatelessWidget {
           // 5. Kalkulator Umur & Shelf-Life (Menu 9)
           _buildItemBantuan(
             ikon: Icons.hourglass_top_outlined,
-            warna: Colors.purple,
+            warna: AppColors.primary,
             judul: "5. Kalkulator Umur & Waktu Detil (Menu 9)",
             isi: "• Pengguna hanya perlu memilih TANGGAL (tanpa perlu input jam & menit).\n"
                 "• Perhitungan otomatis dimulai tepat pada pukul 00:00:00 di tanggal yang dipilih.\n"
@@ -127,8 +130,8 @@ class HalamanBantuan extends StatelessWidget {
           // 6. Fun Racking Challenge (Menu 10 / Tab Stopwatch)
           _buildItemBantuan(
             ikon: Icons.timer_outlined,
-            warna: Colors.amber.shade800,
-            judul: "6. Fun Racking Challenge / Stopwatch Duel",
+            warna: AppColors.secondary,
+            judul: "6. Fun Racking Challenge / Stopwatch Duel (Menu 10)",
             isi: "• Fitur gamifikasi lomba kecepatan menata rak gudang antar 2 pekerja berhadiah bonus.\n"
                 "• Tampilan Split-Screen: Layar atas (Pekerja 1) dan layar bawah (Pekerja 2).\n"
                 "• Tombol 'MULAI DUEL BERSAMA': Menghitung mundur (3.. 2.. 1.. GO!) untuk memulai stopwatch serentak secara adil.\n"
@@ -137,10 +140,10 @@ class HalamanBantuan extends StatelessWidget {
                 "• Toggle tombol di pojok kanan atas untuk beralih ke Single Mode.",
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 18),
           const Text(
             "FAQ (Pertanyaan Umum):",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primaryDark),
           ),
           const SizedBox(height: 8),
 
@@ -167,18 +170,17 @@ class HalamanBantuan extends StatelessWidget {
     required String judul,
     required String isi,
   }) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      decoration: AppStyles.cardBoxDecoration(),
       child: ExpansionTile(
         leading: CircleAvatar(
-          backgroundColor: warna.withAlpha(30),
+          backgroundColor: warna.withAlpha(25),
           child: Icon(ikon, color: warna),
         ),
         title: Text(
           judul,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textDark),
         ),
         children: [
           Padding(
@@ -187,7 +189,7 @@ class HalamanBantuan extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 isi,
-                style: TextStyle(fontSize: 13, height: 1.4, color: Colors.grey.shade800),
+                style: const TextStyle(fontSize: 13, height: 1.4, color: AppColors.textDark),
               ),
             ),
           ),
@@ -197,21 +199,22 @@ class HalamanBantuan extends StatelessWidget {
   }
 
   Widget _buildFAQItem({required String tanya, required String jawab}) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.only(bottom: 8),
+      decoration: AppStyles.cardBoxDecoration(),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Q: $tanya",
-              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+              style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.primary),
             ),
             const SizedBox(height: 4),
             Text(
               "A: $jawab",
-              style: TextStyle(color: Colors.grey.shade800, fontSize: 13),
+              style: const TextStyle(color: AppColors.textDark, fontSize: 13),
             ),
           ],
         ),

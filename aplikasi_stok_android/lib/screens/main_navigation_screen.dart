@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'beranda.dart';
-import 'stopwatch_challenge.dart';
-import 'bantuan.dart';
-import 'session_manager.dart';
-import 'main.dart';
+import '../styles/app_colors.dart';
+import '../database/session_manager.dart';
+import 'beranda_screen.dart';
+import 'stopwatch_challenge_screen.dart';
+import 'bantuan_screen.dart';
+import 'auth/login_screen.dart';
 
 /// Wrapper Layar Utama dengan Bottom Navigation Bar
-/// 1. Beranda (Menu Fitur)
+/// 1. Beranda (Dashboard Menu Fitur)
 /// 2. Stopwatch (Racking Challenge)
 /// 3. Pusat Bantuan (Help Center)
 /// 4. Logout Sesi (dengan dialog konfirmasi)
@@ -26,7 +27,6 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _currentIndex = 0;
-
   late List<Widget> _pages;
 
   @override
@@ -39,7 +39,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       ),
       const HalamanStopwatchChallenge(),
       const HalamanBantuan(),
-      const SizedBox(), // Placeholder untuk tab logout
+      const SizedBox(), // Placeholder tab logout
     ];
   }
 
@@ -50,7 +50,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       builder: (ctx) => AlertDialog(
         title: const Row(
           children: [
-            Icon(Icons.logout, color: Colors.red),
+            Icon(Icons.logout, color: AppColors.danger),
             SizedBox(width: 8),
             Text("Konfirmasi Logout"),
           ],
@@ -65,15 +65,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.danger,
               foregroundColor: Colors.white,
             ),
             onPressed: () async {
-              Navigator.pop(ctx); // Tutup dialog
-              await SessionManager.hapusSesi(); // Hapus SharedPreferences
+              Navigator.pop(ctx);
+              await SessionManager.hapusSesi();
 
               if (mounted) {
-                // Kembali ke halaman Login & hapus seluruh tumpukan halaman
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => const HalamanLogin()),
@@ -94,12 +93,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        selectedItemColor: Colors.blue.shade800,
-        unselectedItemColor: Colors.grey,
+        selectedItemColor: AppColors.primary,
+        unselectedItemColor: AppColors.textMuted,
+        backgroundColor: Colors.white,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
           if (index == 3) {
-            // Tab Logout dipilih -> Tampilkan dialog konfirmasi
             _konfirmasiLogout();
           } else {
             setState(() {

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'data_gudang.dart';
+import '../data_gudang.dart';
+import '../logic/operasional_stok_logic.dart';
+import '../styles/app_colors.dart';
+import '../styles/app_styles.dart';
+import '../styles/app_text_styles.dart';
 
 /// Halaman Penjumlahan dan Pengurangan Angka (Kriteria 3)
-/// Studi Kasus: Tambah Stok Masuk (+) & Kurang Stok Keluar (-) Barang Gudang
-/// Diselaraskan 100% dengan modul CLI aplikasi_stok
+/// Menggunakan OperasionalStokLogic untuk komputasi, serta AppStyles/AppColors untuk desain visual.
 class HalamanPenjumlahanPengurangan extends StatefulWidget {
   const HalamanPenjumlahanPengurangan({super.key});
 
@@ -14,14 +17,11 @@ class HalamanPenjumlahanPengurangan extends StatefulWidget {
 
 class _HalamanPenjumlahanPenguranganState
     extends State<HalamanPenjumlahanPengurangan> {
-  // Controller untuk membaca input jumlah angka
   final TextEditingController _jumlahController = TextEditingController();
 
-  // Menyimpan barang yang sedang dipilih
   int? _idDipilih;
   String? _catatanPerhitungan;
 
-  // Fungsi Operasi Penjumlahan (+)
   void _tambahStok() {
     final jumlah = int.tryParse(_jumlahController.text.trim());
 
@@ -34,21 +34,26 @@ class _HalamanPenjumlahanPenguranganState
       return;
     }
 
+    final barang = DataGudang.daftarBarang
+        .firstWhere((item) => item["id"] == _idDipilih);
+    final stokLama = barang["stok"] as int;
+
+    // Menghitung penjumlahan melalui OperasionalStokLogic
+    final hasil = OperasionalStokLogic.hitungTambahStok(
+      stokLama: stokLama,
+      jumlah: jumlah,
+      namaBarang: barang["nama"],
+      satuan: barang["satuan"],
+    );
+
     setState(() {
-      final barang = DataGudang.daftarBarang
-          .firstWhere((item) => item["id"] == _idDipilih);
-      final stokLama = barang["stok"];
-      barang["stok"] = stokLama + jumlah; // Operasi Penjumlahan (+)
-      _catatanPerhitungan =
-          "[✓] PENJUMLAHAN STOK BERHASIL!\n"
-          "Perhitungan Matematika : $stokLama + $jumlah = ${barang["stok"]}\n"
-          "Stok akhir '${barang["nama"]}' sekarang: ${barang["stok"]} ${barang["satuan"]}";
-      _tampilkanPesan("Penjumlahan Berhasil: $stokLama + $jumlah = ${barang["stok"]} ${barang["satuan"]}");
+      barang["stok"] = hasil["stokBaru"];
+      _catatanPerhitungan = hasil["rincian"];
+      _tampilkanPesan(hasil["pesan"]);
       _jumlahController.clear();
     });
   }
 
-  // Fungsi Operasi Pengurangan (-)
   void _kurangStok() {
     final jumlah = int.tryParse(_jumlahController.text.trim());
 
@@ -61,22 +66,27 @@ class _HalamanPenjumlahanPenguranganState
       return;
     }
 
+    final barang = DataGudang.daftarBarang
+        .firstWhere((item) => item["id"] == _idDipilih);
+    final stokLama = barang["stok"] as int;
+
+    // Menghitung pengurangan melalui OperasionalStokLogic
+    final hasil = OperasionalStokLogic.hitungKurangStok(
+      stokLama: stokLama,
+      jumlah: jumlah,
+      namaBarang: barang["nama"],
+      satuan: barang["satuan"],
+    );
+
+    if (!hasil["sukses"]) {
+      _tampilkanPesan(hasil["pesan"]);
+      return;
+    }
+
     setState(() {
-      final barang = DataGudang.daftarBarang
-          .firstWhere((item) => item["id"] == _idDipilih);
-      final stokLama = barang["stok"];
-
-      if (stokLama - jumlah < 0) {
-        _tampilkanPesan("Gagal: Stok tidak cukup untuk dikurangi!");
-        return;
-      }
-
-      barang["stok"] = stokLama - jumlah; // Operasi Pengurangan (-)
-      _catatanPerhitungan =
-          "[✓] PENGURANGAN STOK BERHASIL!\n"
-          "Perhitungan Matematika : $stokLama - $jumlah = ${barang["stok"]}\n"
-          "Stok akhir '${barang["nama"]}' sekarang: ${barang["stok"]} ${barang["satuan"]}";
-      _tampilkanPesan("Pengurangan Berhasil: $stokLama - $jumlah = ${barang["stok"]} ${barang["satuan"]}");
+      barang["stok"] = hasil["stokBaru"];
+      _catatanPerhitungan = hasil["rincian"];
+      _tampilkanPesan(hasil["pesan"]);
       _jumlahController.clear();
     });
   }
@@ -90,9 +100,10 @@ class _HalamanPenjumlahanPenguranganState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text("Penjumlahan & Pengurangan Stok"),
-        backgroundColor: Colors.blue,
+        title: const Text("Penjumlahan & Pengurangan Stok", style: AppTextStyles.appBarTitle),
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -102,30 +113,38 @@ class _HalamanPenjumlahanPenguranganState
           children: [
             const Text(
               "1. Pilih Barang Gudang:",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primaryDark),
             ),
             const SizedBox(height: 8),
 
             // Daftar Barang
             ...DataGudang.daftarBarang.map((barang) {
               final isDipilih = _idDipilih == barang["id"];
-              return Card(
-                color: isDipilih ? Colors.blue.shade50 : Colors.white,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: isDipilih ? Colors.blue : Colors.grey.shade300,
+              return Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                decoration: BoxDecoration(
+                  color: isDipilih ? AppColors.primaryLight : Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: isDipilih ? AppColors.primary : AppColors.border,
                     width: isDipilih ? 2 : 1,
                   ),
-                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha(5),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: ListTile(
                   title: Text(barang["nama"],
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                      style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textDark)),
                   trailing: Text(
                     "Stok: ${barang["stok"]} ${barang["satuan"]}",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: isDipilih ? Colors.blue : Colors.black87,
+                      color: isDipilih ? AppColors.primaryDark : AppColors.textDark,
                     ),
                   ),
                   onTap: () {
@@ -137,10 +156,10 @@ class _HalamanPenjumlahanPenguranganState
               );
             }),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 18),
             const Text(
               "2. Masukkan Jumlah Angka Operasi:",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primaryDark),
             ),
             const SizedBox(height: 8),
 
@@ -148,10 +167,10 @@ class _HalamanPenjumlahanPenguranganState
             TextField(
               controller: _jumlahController,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
+              decoration: AppStyles.inputDecoration(
                 labelText: "Jumlah (Angka)",
                 hintText: "Contoh: 5",
+                prefixIcon: Icons.calculate_outlined,
               ),
             ),
 
@@ -162,11 +181,7 @@ class _HalamanPenjumlahanPenguranganState
               children: [
                 Expanded(
                   child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
+                    style: AppStyles.successButton,
                     onPressed: _tambahStok,
                     icon: const Icon(Icons.add),
                     label: const Text("Tambah (+)"),
@@ -175,11 +190,7 @@ class _HalamanPenjumlahanPenguranganState
                 const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                    ),
+                    style: AppStyles.warningButton,
                     onPressed: _kurangStok,
                     icon: const Icon(Icons.remove),
                     label: const Text("Kurang (-)"),
@@ -191,15 +202,15 @@ class _HalamanPenjumlahanPenguranganState
             if (_catatanPerhitungan != null) ...[
               const SizedBox(height: 16),
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.blue.shade300),
+                  color: AppColors.primaryLight,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: AppColors.lavenderAccent),
                 ),
                 child: Text(
                   _catatanPerhitungan!,
-                  style: const TextStyle(fontWeight: FontWeight.w600, height: 1.4),
+                  style: const TextStyle(fontWeight: FontWeight.w600, height: 1.4, color: AppColors.primaryDark),
                 ),
               ),
             ],

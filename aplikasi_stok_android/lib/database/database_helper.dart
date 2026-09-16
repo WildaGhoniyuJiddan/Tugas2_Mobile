@@ -3,7 +3,7 @@ import 'package:path/path.dart';
 
 /// Class DatabaseHelper
 /// Mengelola koneksi dan operasi database lokal SQLite untuk aplikasi gudang.
-/// Didesain sederhana dan mudah dipahami oleh mahasiswa/pemula.
+/// Didesain terpisah dalam layer database agar modular dan rapi.
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
   static Database? _database;
@@ -95,7 +95,7 @@ class DatabaseHelper {
       ('wilda', 'password123', 'Wilda Ghoniyu Jiddan', 'Lead Warehouse Officer')
     ''');
 
-    // Mengisi data awal barang gudang (diselaraskan dengan aplikasi_stok)
+    // Mengisi data awal barang gudang (diselaraskan dengan inventaris sembako)
     await db.rawInsert('''
       INSERT INTO items (kode_barang, nama_barang, kategori, stok, satuan, harga_satuan, lokasi_rak)
       VALUES 

@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
-import 'data_kelompok.dart';
-import 'penjumlahan_pengurangan.dart';
-import 'perkalian_pembagian.dart';
-import 'ganjil_genap.dart';
-import 'total_angka.dart';
-import 'input_barang.dart';
-import 'manajemen_stok_sqlite.dart';
-import 'penanggalan_barang_masuk.dart';
-import 'kalkulator_umur.dart';
-import 'session_manager.dart';
-import 'main.dart';
+import '../database/session_manager.dart';
+import '../styles/app_colors.dart';
+import '../styles/app_styles.dart';
+import '../styles/app_text_styles.dart';
+import 'auth/login_screen.dart';
+
+// Import layar modul operasional & matematika eksisting
+import 'data_kelompok_screen.dart';
+import 'penjumlahan_pengurangan_screen.dart';
+import 'perkalian_pembagian_screen.dart';
+import 'ganjil_genap_screen.dart';
+import 'total_angka_screen.dart';
+import 'input_barang_screen.dart';
+
+// Import layar modul baru Tugas 2
+import 'manajemen_stok_sqlite_screen.dart';
+import 'penanggalan_barang_masuk_screen.dart';
+import 'kalkulator_umur_screen.dart';
+import 'stopwatch_challenge_screen.dart';
 
 /// Halaman Menu Utama / Dashboard Terpadu Aplikasi WarehouseSmart
-/// Menampilkan seluruh menu eksisting (Menu 1-6) dan menu baru Tugas 2 (Menu 7-10)
-/// Ditulis dengan struktur rapi dan ramah pemula.
+/// Menggunakan tema warna Lavender (AppColors.primary) dan styling terpisah (AppStyles).
 class HalamanBeranda extends StatelessWidget {
   final String username;
   final String namaLengkap;
@@ -31,7 +38,7 @@ class HalamanBeranda extends StatelessWidget {
       builder: (ctx) => AlertDialog(
         title: const Row(
           children: [
-            Icon(Icons.logout, color: Colors.red),
+            Icon(Icons.logout, color: AppColors.danger),
             SizedBox(width: 8),
             Text("Konfirmasi Logout"),
           ],
@@ -46,7 +53,7 @@ class HalamanBeranda extends StatelessWidget {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.danger,
               foregroundColor: Colors.white,
             ),
             onPressed: () async {
@@ -70,10 +77,12 @@ class HalamanBeranda extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text("Menu Utama Gudang"),
-        backgroundColor: Colors.blue.shade800,
+        title: const Text("Menu Utama Gudang", style: AppTextStyles.appBarTitle),
+        backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
+        elevation: 0,
         actions: [
           IconButton(
             tooltip: "Logout",
@@ -85,41 +94,34 @@ class HalamanBeranda extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // Banner Selamat Datang
-          Card(
-            color: Colors.blue.shade800,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            elevation: 3,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "WarehouseSmart - Sistem Gudang & Utilitas Terintegrasi",
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 13,
+          // Banner Sambutan dengan Gradien Lavender
+          Container(
+            decoration: AppStyles.bannerDecoration,
+            padding: const EdgeInsets.all(18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Row(
+                  children: [
+                    Icon(Icons.warehouse_rounded, color: Colors.white70, size: 18),
+                    SizedBox(width: 6),
+                    Text(
+                      "WarehouseSmart - Sistem Gudang Terintegrasi",
+                      style: AppTextStyles.bannerSubtitle,
                     ),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    "Halo, ${namaLengkap.isNotEmpty ? namaLengkap : username}!",
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    "Pilih salah satu menu operasional di bawah:",
-                    style: TextStyle(color: Colors.white70, fontSize: 12),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  "Halo, ${namaLengkap.isNotEmpty ? namaLengkap : username}!",
+                  style: AppTextStyles.bannerTitle,
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  "Kelola inventaris, penanggalan terima barang, dan kalkulasi logistik:",
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+              ],
             ),
           ),
 
@@ -130,19 +132,19 @@ class HalamanBeranda extends StatelessWidget {
           // ==========================================================
           _sectionHeader(
             judul: "Operasional & Matematika Dasar (Menu Eksisting)",
-            warna: Colors.blue.shade900,
+            warna: AppColors.primaryDark,
             ikon: Icons.warehouse,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
 
           // Menu 1: Data Kelompok
           _menuItem(
             context: context,
             nomor: "1",
             judul: "Data Kelompok",
-            deskripsi: "Daftar nama dan NIM anggota pengembang",
-            ikon: Icons.group,
-            warnaIkon: Colors.indigo,
+            deskripsi: "Daftar nama dan NIM anggota tim pengembang",
+            ikon: Icons.group_outlined,
+            warnaIkon: AppColors.primary,
             tujuan: const HalamanDataKelompok(),
           ),
 
@@ -153,7 +155,7 @@ class HalamanBeranda extends StatelessWidget {
             judul: "Penjumlahan & Pengurangan Stok",
             deskripsi: "Update stok masuk (+) dan stok keluar (-)",
             ikon: Icons.add_circle_outline,
-            warnaIkon: Colors.green,
+            warnaIkon: AppColors.success,
             tujuan: const HalamanPenjumlahanPengurangan(),
           ),
 
@@ -164,7 +166,7 @@ class HalamanBeranda extends StatelessWidget {
             judul: "Perkalian & Pembagian Angka",
             deskripsi: "Hitung total box (×) & distribusi rak gudang (÷, %)",
             ikon: Icons.calculate_outlined,
-            warnaIkon: Colors.orange,
+            warnaIkon: AppColors.secondary,
             tujuan: const HalamanPerkalianPembagian(),
           ),
 
@@ -173,9 +175,9 @@ class HalamanBeranda extends StatelessWidget {
             context: context,
             nomor: "4",
             judul: "Analisis Ganjil / Genap Stok",
-            deskripsi: "Cek sifat stok ganjil/genap untuk penataan display rak",
+            deskripsi: "Cek sifat stok ganjil/genap untuk penataan rak",
             ikon: Icons.balance,
-            warnaIkon: Colors.purple,
+            warnaIkon: AppColors.primaryDark,
             tujuan: const HalamanGanjilGenap(),
           ),
 
@@ -184,9 +186,9 @@ class HalamanBeranda extends StatelessWidget {
             context: context,
             nomor: "5",
             judul: "Total Angka dalam Field Input",
-            deskripsi: "Hitung total deret angka & total akumulasi digit",
+            deskripsi: "Hitung total deret angka & akumulasi digit karakter",
             ikon: Icons.functions,
-            warnaIkon: Colors.teal,
+            warnaIkon: AppColors.accent,
             tujuan: const HalamanTotalAngka(),
           ),
 
@@ -194,25 +196,24 @@ class HalamanBeranda extends StatelessWidget {
           _menuItem(
             context: context,
             nomor: "6",
-            judul: "Input Barang Baru (Memori)",
+            judul: "Input Barang Baru (Memori Cepat)",
             deskripsi: "Daftarkan jenis barang baru ke daftar cepat",
             ikon: Icons.add_box_outlined,
-            warnaIkon: Colors.red,
+            warnaIkon: AppColors.danger,
             tujuan: const HalamanInputBarang(),
           ),
 
           const SizedBox(height: 24),
 
           // ==========================================================
-          // BAGIAN 2: MODUL BARU TUGAS 2 (MENU 7-9)
-          // (Fitur Stopwatch dapat diakses langsung lewat navbar bawah)
+          // BAGIAN 2: MODUL BARU TUGAS 2 (MENU 7-10)
           // ==========================================================
           _sectionHeader(
             judul: "Fitur Lanjutan, Basis Data & Penanggalan (Tugas 2)",
-            warna: Colors.deepPurple.shade800,
+            warna: AppColors.primaryDark,
             ikon: Icons.stars,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
 
           // Menu 7: Manajemen Stok Gudang SQLite (CRUD & Log)
           _menuItem(
@@ -220,8 +221,8 @@ class HalamanBeranda extends StatelessWidget {
             nomor: "7",
             judul: "Manajemen Stok SQLite (CRUD & Audit Log)",
             deskripsi: "Penyimpanan persisten SQLite, edit data & riwayat mutasi",
-            ikon: Icons.storage,
-            warnaIkon: Colors.blue.shade800,
+            ikon: Icons.storage_rounded,
+            warnaIkon: AppColors.primary,
             tujuan: const HalamanManajemenStokSQLite(),
           ),
 
@@ -231,8 +232,8 @@ class HalamanBeranda extends StatelessWidget {
             nomor: "8",
             judul: "Penanggalan Terima Barang Gudang",
             deskripsi: "Konversi tanggal terima ke Hijriah, Weton Jawa & Saka Bali",
-            ikon: Icons.calendar_month,
-            warnaIkon: Colors.teal.shade700,
+            ikon: Icons.calendar_month_outlined,
+            warnaIkon: AppColors.accent,
             tujuan: const HalamanPenanggalanBarangMasuk(),
           ),
 
@@ -240,11 +241,22 @@ class HalamanBeranda extends StatelessWidget {
           _menuItem(
             context: context,
             nomor: "9",
-            judul: "Kalkulator Umur & Waktu Detil (Mulai 00:00:00)",
-            deskripsi: "Input tanggal praktis, live ticker detik untuk staf & batch",
-            ikon: Icons.hourglass_top,
-            warnaIkon: Colors.purple.shade700,
+            judul: "Kalkulator Umur & Usia Batch (00:00:00)",
+            deskripsi: "Input tanggal praktis, live ticker detik untuk staf & barang",
+            ikon: Icons.hourglass_top_outlined,
+            warnaIkon: AppColors.primaryDark,
             tujuan: const HalamanKalkulatorUmur(),
+          ),
+
+          // Menu 10: Stopwatch Speed Stacking Challenge
+          _menuItem(
+            context: context,
+            nomor: "10",
+            judul: "Stopwatch Susun Rak (Split Challenge)",
+            deskripsi: "2 stopwatch split layar untuk kompetisi kecepatan pekerja gudang",
+            ikon: Icons.timer_outlined,
+            warnaIkon: AppColors.secondary,
+            tujuan: const HalamanStopwatchChallenge(),
           ),
 
           const SizedBox(height: 24),
@@ -253,7 +265,7 @@ class HalamanBeranda extends StatelessWidget {
     );
   }
 
-  // Header Pemisah Bagian Menu
+  /// Header Pemisah Bagian Menu
   Widget _sectionHeader({
     required String judul,
     required Color warna,
@@ -266,18 +278,14 @@ class HalamanBeranda extends StatelessWidget {
         Expanded(
           child: Text(
             judul,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-              color: warna,
-            ),
+            style: AppTextStyles.sectionTitle.copyWith(color: warna),
           ),
         ),
       ],
     );
   }
 
-  // Widget bantuan untuk membuat tombol menu yang rapi, sama persis dengan kode awal
+  /// Widget kartu menu dengan AppStyles & AppColors
   Widget _menuItem({
     required BuildContext context,
     required String nomor,
@@ -287,15 +295,13 @@ class HalamanBeranda extends StatelessWidget {
     required Color warnaIkon,
     required Widget tujuan,
   }) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
+      decoration: AppStyles.cardBoxDecoration(),
       child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         leading: CircleAvatar(
-          backgroundColor: warnaIkon.withAlpha(35),
+          backgroundColor: warnaIkon.withAlpha(30),
           child: Text(
             nomor,
             style: TextStyle(
@@ -304,15 +310,9 @@ class HalamanBeranda extends StatelessWidget {
             ),
           ),
         ),
-        title: Text(
-          judul,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-        ),
-        subtitle: Text(
-          deskripsi,
-          style: TextStyle(color: Colors.grey.shade700, fontSize: 12),
-        ),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        title: Text(judul, style: AppTextStyles.cardTitle),
+        subtitle: Text(deskripsi, style: AppTextStyles.cardSubtitle),
+        trailing: const Icon(Icons.chevron_right, color: AppColors.textMuted),
         onTap: () {
           Navigator.push(
             context,
