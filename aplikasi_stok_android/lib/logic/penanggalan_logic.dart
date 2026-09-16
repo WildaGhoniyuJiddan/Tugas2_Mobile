@@ -45,13 +45,13 @@ class PenanggalanLogic {
 
     String infoMomentum = "Periode operasional gudang normal.";
     if (mHijri == 9) {
-      infoMomentum = "🌙 Bulan Suci Ramadhan (Peningkatan permintaan sembako & kurma).";
+      infoMomentum = " Bulan Suci Ramadhan (Peningkatan permintaan sembako & kurma).";
     } else if (mHijri == 10 && dHijri <= 3) {
-      infoMomentum = "🎉 Hari Raya Idul Fitri 1-3 Syawwal (Puncak distribusi makanan ringan).";
+      infoMomentum = " Hari Raya Idul Fitri 1-3 Syawwal (Puncak distribusi makanan ringan).";
     } else if (mHijri == 12 && dHijri == 10) {
-      infoMomentum = "🐑 Hari Raya Idul Adha (Kebutuhan bumbu kurban & pengemasan).";
+      infoMomentum = " Hari Raya Idul Adha (Kebutuhan bumbu kurban & pengemasan).";
     } else if (dHijri >= 13 && dHijri <= 15) {
-      infoMomentum = "✨ Jadwal Puasa Sunnah Ayyamul Bidh ($dHijri-$namaBulan).";
+      infoMomentum = " Jadwal Puasa Sunnah Ayyamul Bidh ($dHijri-$namaBulan).";
     }
 
     return {
