@@ -162,11 +162,11 @@ class PenanggalanLogic {
 
     String infoHariRaya = "Kondisi operasional logistik pelabuhan Bali normal.";
     if (namaWuku == "Dungulan") {
-      infoHariRaya = "🌺 Wuku Dungulan: Rangkaian Hari Raya Galungan.";
+      infoHariRaya = " Wuku Dungulan: Rangkaian Hari Raya Galungan.";
     } else if (namaWuku == "Kuningan") {
-      infoHariRaya = "🎋 Wuku Kuningan: Rangkaian perayaan Hari Raya Kuningan.";
+      infoHariRaya = " Wuku Kuningan: Rangkaian perayaan Hari Raya Kuningan.";
     } else if (tanggal.month == 3 && tanggal.day >= 10 && tanggal.day <= 25) {
-      infoHariRaya = "🛑 Perhatian: Hari Raya Nyepi (Seluruh pelabuhan & logistik Bali off 24 jam).";
+      infoHariRaya = " Perhatian: Hari Raya Nyepi (Seluruh pelabuhan & logistik Bali off 24 jam).";
     }
 
     return {
