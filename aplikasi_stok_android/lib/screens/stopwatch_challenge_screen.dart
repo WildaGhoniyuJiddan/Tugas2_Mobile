@@ -127,8 +127,8 @@ class _HalamanStopwatchChallengeState extends State<HalamanStopwatchChallenge> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text("Fun Racking Challenge", style: AppTextStyles.appBarTitle),
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textDark,
         actions: [
           // Toggle Split-Screen / Single Mode
           IconButton(

@@ -110,8 +110,8 @@ class _HalamanInputBarangState extends State<HalamanInputBarang> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text("Input Barang Baru (Memori)", style: AppTextStyles.appBarTitle),
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textDark,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

@@ -15,8 +15,8 @@ class HalamanDataKelompok extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text("Data Kelompok Mahasiswa", style: AppTextStyles.appBarTitle),
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textDark,
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),

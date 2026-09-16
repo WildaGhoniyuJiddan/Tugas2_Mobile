@@ -6,7 +6,7 @@ import 'stopwatch_challenge_screen.dart';
 import 'bantuan_screen.dart';
 import 'auth/login_screen.dart';
 
-/// Wrapper Layar Utama dengan Bottom Navigation Bar
+/// Wrapper layar utama dengan navigasi bawah.
 /// 1. Beranda (Dashboard Menu Fitur)
 /// 2. Stopwatch (Racking Challenge)
 /// 3. Pusat Bantuan (Help Center)
@@ -91,12 +91,12 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        selectedItemColor: AppColors.primary,
-        unselectedItemColor: AppColors.textMuted,
-        backgroundColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _currentIndex,
+        backgroundColor: AppColors.surface,
+        indicatorColor: AppColors.primaryLight,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        height: 72,
         onTap: (index) {
           if (index == 3) {
             _konfirmasiLogout();
@@ -106,23 +106,25 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             });
           }
         },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home_rounded),
             label: "Beranda",
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.timer_outlined),
-            activeIcon: Icon(Icons.timer),
+            selectedIcon: Icon(Icons.timer_rounded),
             label: "Stopwatch",
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: Icon(Icons.help_outline),
-            activeIcon: Icon(Icons.help),
+            selectedIcon: Icon(Icons.help_rounded),
             label: "Bantuan",
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.logout),
+          NavigationDestination(
+            icon: Icon(Icons.logout_outlined),
+            selectedIcon: Icon(Icons.logout_rounded),
             label: "Logout",
           ),
         ],

@@ -75,8 +75,8 @@ class _HalamanPerkalianPembagianState extends State<HalamanPerkalianPembagian> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text("Perkalian & Pembagian", style: AppTextStyles.appBarTitle),
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textDark,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

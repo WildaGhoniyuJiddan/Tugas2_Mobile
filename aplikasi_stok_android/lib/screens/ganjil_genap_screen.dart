@@ -37,8 +37,8 @@ class _HalamanGanjilGenapState extends State<HalamanGanjilGenap> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text("Analisis Ganjil / Genap Stok", style: AppTextStyles.appBarTitle),
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textDark,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

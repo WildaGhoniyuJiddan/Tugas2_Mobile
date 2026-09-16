@@ -397,8 +397,8 @@ class _HalamanManajemenStokSQLiteState
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text("Manajemen Stok SQLite", style: AppTextStyles.appBarTitle),
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textDark,
         actions: [
           IconButton(
             tooltip: "Tambah Barang Baru",
@@ -408,9 +408,9 @@ class _HalamanManajemenStokSQLiteState
         ],
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: AppColors.secondary,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white70,
+          indicatorColor: AppColors.primary,
+          labelColor: AppColors.primary,
+          unselectedLabelColor: AppColors.textMuted,
           tabs: [
             Tab(icon: const Icon(Icons.inventory_2_outlined), text: "Daftar Stok (${_daftarBarang.length})"),
             Tab(icon: const Icon(Icons.history_outlined), text: "Riwayat Log (${_daftarLog.length})"),

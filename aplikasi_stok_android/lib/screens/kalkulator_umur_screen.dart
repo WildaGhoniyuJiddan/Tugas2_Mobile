@@ -86,8 +86,8 @@ class _HalamanKalkulatorUmurState extends State<HalamanKalkulatorUmur> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text("Kalkulator Umur & Waktu Detil", style: AppTextStyles.appBarTitle),
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textDark,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

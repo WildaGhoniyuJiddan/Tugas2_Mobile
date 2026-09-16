@@ -26,10 +26,27 @@ class AplikasiStokApp extends StatelessWidget {
       title: 'WarehouseSmart',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColors.primary,
+          brightness: Brightness.light,
+        ),
         primaryColor: AppColors.primary,
         scaffoldBackgroundColor: AppColors.background,
         useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: AppColors.surface,
+          foregroundColor: AppColors.textDark,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          surfaceTintColor: Colors.transparent,
+          centerTitle: false,
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          isDense: true,
+        ),
+        snackBarTheme: const SnackBarThemeData(
+          behavior: SnackBarBehavior.floating,
+        ),
       ),
       // Cek sesi otomatis saat startup (Auto-Login)
       home: const PemeriksaSesiStartup(),

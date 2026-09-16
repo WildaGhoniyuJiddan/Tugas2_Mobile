@@ -103,136 +103,138 @@ class _HalamanLoginState extends State<HalamanLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Container(
-            decoration: AppStyles.cardBoxDecoration(),
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Icon Header Bernuansa Lavender
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: const BoxDecoration(
-                    color: AppColors.primaryLight,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.warehouse_rounded,
-                    size: 56,
-                    color: AppColors.primary,
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // Judul Aplikasi
-                const Text(
-                  "WarehouseSmart",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryDark,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                const Text(
-                  "Sistem Manajemen Gudang & Utilitas - Tugas 2",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: AppColors.textMuted,
-                    fontSize: 13,
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Input Username
-                TextField(
-                  controller: _usernameController,
-                  decoration: AppStyles.inputDecoration(
-                    labelText: "Username",
-                    hintText: "Masukkan username Anda",
-                    prefixIcon: Icons.person_outline,
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // Input Password dengan Toggle Obscure
-                TextField(
-                  controller: _passwordController,
-                  obscureText: _obscurePassword,
-                  decoration: AppStyles.inputDecoration(
-                    labelText: "Password",
-                    hintText: "Masukkan password Anda",
-                    prefixIcon: Icons.lock_outline,
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                        color: AppColors.textMuted,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Petunjuk Akun Demo
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryLight,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AppColors.lavenderAccent.withAlpha(120)),
-                  ),
-                  child: const Text(
-                    "Petunjuk Login Demo:\n"
-                    "• admin / admin123 (Super Admin)\n"
-                    "• user / user123 (Staff Gudang)\n"
-                    "• wilda / password123 (Lead Dev)",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.primaryDark,
-                      height: 1.4,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Tombol Login
-                ElevatedButton(
-                  style: AppStyles.primaryButton,
-                  onPressed: _isLoading ? null : _prosesLogin,
-                  child: _isLoading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
-                          ),
-                        )
-                      : const Text(
-                          "LOGIN MASUK",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 420),
+              child: Container(
+                decoration: AppStyles.cardBoxDecoration(),
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Ikon aplikasi dibuat terpusat agar tetap benar-benar bulat.
+                    Center(
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: const BoxDecoration(
+                          color: AppColors.primaryLight,
+                          shape: BoxShape.circle,
                         ),
+                        child: const Icon(
+                          Icons.warehouse_rounded,
+                          size: 48,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Judul Aplikasi
+                    const Text(
+                      "WarehouseSmart",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textDark,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      "Sistem manajemen stok sederhana",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: AppColors.textMuted,
+                        fontSize: 13,
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Input Username
+                    TextField(
+                      controller: _usernameController,
+                      decoration: AppStyles.inputDecoration(
+                        labelText: "Username",
+                        hintText: "Masukkan username Anda",
+                        prefixIcon: Icons.person_outline,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Input Password dengan Toggle Obscure
+                    TextField(
+                      controller: _passwordController,
+                      obscureText: _obscurePassword,
+                      decoration: AppStyles.inputDecoration(
+                        labelText: "Password",
+                        hintText: "Masukkan password Anda",
+                        prefixIcon: Icons.lock_outline,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                            color: AppColors.textMuted,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // Petunjuk Akun Demo
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryLight,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: AppColors.lavenderAccent),
+                      ),
+                      child: const Text(
+                        "Akun demo: admin / admin123  •  user / user123  •  wilda / password123",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors.primaryDark,
+                          height: 1.4,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    // Tombol Login
+                    ElevatedButton(
+                      style: AppStyles.primaryButton,
+                      onPressed: _isLoading ? null : _prosesLogin,
+                      child: _isLoading
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text(
+                              "LOGIN MASUK",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),

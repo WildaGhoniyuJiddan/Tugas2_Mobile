@@ -55,8 +55,8 @@ class _HalamanTotalAngkaState extends State<HalamanTotalAngka> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text("Total Angka dalam Field Input", style: AppTextStyles.appBarTitle),
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textDark,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

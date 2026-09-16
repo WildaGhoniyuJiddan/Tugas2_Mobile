@@ -15,8 +15,8 @@ class HalamanBantuan extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text("Pusat Bantuan & Panduan", style: AppTextStyles.appBarTitle),
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textDark,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),

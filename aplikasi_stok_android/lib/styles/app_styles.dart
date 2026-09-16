@@ -2,40 +2,21 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 /// Class AppStyles
-/// Berfungsi layaknya berkas "CSS Stylesheet" di Flutter:
-/// Menyediakan dekorasi kartu, field input, tombol, dan kotak timer reusable.
+/// Kumpulan style UI reusable agar seluruh layar terlihat konsisten.
 class AppStyles {
-  // Dekorasi Kartu Utama (Card Box Shadow)
+  // Kartu datar dengan border tipis agar tampilan terasa ringan.
   static BoxDecoration cardBoxDecoration({Color color = AppColors.surface}) {
     return BoxDecoration(
       color: color,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(14),
       border: Border.all(color: AppColors.border),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withAlpha(8),
-          blurRadius: 8,
-          offset: const Offset(0, 3),
-        ),
-      ],
     );
   }
 
-  // Dekorasi Banner Sambutan (Lavender Gradient)
+  // Banner sambutan sederhana tanpa gradien atau bayangan.
   static BoxDecoration bannerDecoration = BoxDecoration(
-    gradient: const LinearGradient(
-      colors: [AppColors.primary, AppColors.primaryDark],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    ),
-    borderRadius: BorderRadius.circular(14),
-    boxShadow: [
-      BoxShadow(
-        color: AppColors.primary.withAlpha(60),
-        blurRadius: 12,
-        offset: const Offset(0, 4),
-      ),
-    ],
+    color: AppColors.primary,
+    borderRadius: BorderRadius.circular(16),
   );
 
   // Dekorasi Layar Digital Stopwatch
@@ -43,14 +24,7 @@ class AppStyles {
     return BoxDecoration(
       color: AppColors.digitalBg,
       borderRadius: BorderRadius.circular(12),
-      border: Border.all(color: borderColor, width: 2),
-      boxShadow: [
-        BoxShadow(
-          color: borderColor.withAlpha(40),
-          blurRadius: 10,
-          spreadRadius: 1,
-        ),
-      ],
+      border: Border.all(color: borderColor.withAlpha(170)),
     );
   }
 
@@ -75,20 +49,25 @@ class AppStyles {
     return InputDecoration(
       labelText: labelText,
       hintText: hintText,
-      prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: AppColors.primary) : null,
+      prefixIcon: prefixIcon != null ? Icon(prefixIcon, color: AppColors.textMuted) : null,
       suffixIcon: suffixIcon,
+      filled: true,
+      fillColor: AppColors.background,
+      labelStyle: const TextStyle(color: AppColors.textMuted),
+      hintStyle: const TextStyle(color: AppColors.textMuted),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: AppColors.border),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: AppColors.primary, width: 2),
+        borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
     );
   }
 
-  // Gaya Tombol Utama (Lavender Button)
+  // Gaya tombol utama
   static ButtonStyle primaryButton = ElevatedButton.styleFrom(
     backgroundColor: AppColors.primary,
     foregroundColor: Colors.white,
@@ -96,7 +75,7 @@ class AppStyles {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
-    elevation: 2,
+    elevation: 0,
   );
 
   // Gaya Tombol Sukses / Tambah (Green Button)
@@ -107,6 +86,7 @@ class AppStyles {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
+    elevation: 0,
   );
 
   // Gaya Tombol Peringatan / Kurang (Orange Button)
@@ -117,6 +97,7 @@ class AppStyles {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
+    elevation: 0,
   );
 
   // Gaya Tombol Danger / Hapus (Red Button)
@@ -127,5 +108,6 @@ class AppStyles {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10),
     ),
+    elevation: 0,
   );
 }

@@ -4,17 +4,16 @@ import 'app_colors.dart';
 /// Class AppTextStyles
 /// Mengelola seluruh gaya teks (Typography) aplikasi
 class AppTextStyles {
-  // AppBar & Header Utama
+  // AppBar & header utama
   static const TextStyle appBarTitle = TextStyle(
     fontSize: 18,
-    fontWeight: FontWeight.bold,
-    color: Colors.white,
-    letterSpacing: 0.5,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textDark,
   );
 
   static const TextStyle bannerTitle = TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.bold,
+    fontSize: 22,
+    fontWeight: FontWeight.w700,
     color: Colors.white,
   );
 
@@ -25,16 +24,15 @@ class AppTextStyles {
 
   // Judul Bagian Menu (Section)
   static const TextStyle sectionTitle = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.bold,
+    fontSize: 15,
+    fontWeight: FontWeight.w700,
     color: AppColors.primaryDark,
-    letterSpacing: 0.3,
   );
 
   // Judul Kartu Menu (Cards)
   static const TextStyle cardTitle = TextStyle(
     fontSize: 15,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w600,
     color: AppColors.textDark,
   );
 

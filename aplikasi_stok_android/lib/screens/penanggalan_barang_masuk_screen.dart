@@ -117,8 +117,8 @@ class _HalamanPenanggalanBarangMasukState
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text("Penanggalan Terima Barang", style: AppTextStyles.appBarTitle),
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textDark,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),

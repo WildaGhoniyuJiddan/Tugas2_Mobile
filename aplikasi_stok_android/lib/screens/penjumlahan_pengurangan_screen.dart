@@ -103,8 +103,8 @@ class _HalamanPenjumlahanPenguranganState
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text("Penjumlahan & Pengurangan Stok", style: AppTextStyles.appBarTitle),
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textDark,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
