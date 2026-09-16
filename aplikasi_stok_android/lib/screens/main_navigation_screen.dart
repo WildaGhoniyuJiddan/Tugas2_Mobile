@@ -97,7 +97,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         indicatorColor: AppColors.primaryLight,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         height: 72,
-        onTap: (index) {
+        onDestinationSelected: (index) {
           if (index == 3) {
             _konfirmasiLogout();
           } else {
