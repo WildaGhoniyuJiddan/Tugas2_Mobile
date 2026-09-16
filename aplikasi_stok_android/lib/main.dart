@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'main_navigation_screen.dart';
 import 'session_manager.dart';
 import 'database_helper.dart';
@@ -7,6 +8,8 @@ import 'data_gudang.dart';
 void main() async {
   // Memastikan binding Flutter diinisialisasi sebelum mengakses SharedPreferences / SQLite
   WidgetsFlutterBinding.ensureInitialized();
+  // Inisialisasi locale data untuk formatting tanggal bahasa Indonesia (id_ID)
+  await initializeDateFormatting('id_ID', null);
   runApp(const AplikasiStokApp());
 }
 

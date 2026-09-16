@@ -276,7 +276,7 @@ class _HalamanKalkulatorUmurState extends State<HalamanKalkulatorUmur> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               elevation: 4,
               child: Padding(
-                padding: const EdgeInsets.all(18),
+                padding: const EdgeInsets.all(14),
                 child: Column(
                   children: [
                     Row(
@@ -284,39 +284,44 @@ class _HalamanKalkulatorUmurState extends State<HalamanKalkulatorUmur> {
                       children: [
                         const Icon(Icons.timer, color: Colors.amber, size: 20),
                         const SizedBox(width: 8),
-                        Text(
-                          isModeStaf
-                              ? "LIVE COUNTER UMUR STAF (REALTIME)"
-                              : "LIVE MASA SIMPAN BATCH (REALTIME)",
-                          style: const TextStyle(
-                            color: Colors.amber,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1,
-                            fontSize: 12,
+                        Flexible(
+                          child: Text(
+                            isModeStaf
+                                ? "LIVE COUNTER UMUR STAF (REALTIME)"
+                                : "LIVE MASA SIMPAN BATCH (REALTIME)",
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.amber,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.8,
+                              fontSize: 12,
+                            ),
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 14),
 
-                    // Kotak Angka Tahun, Bulan, Hari
+                    // Kotak Angka Tahun, Bulan, Hari (Otomatis menyesuaikan lebar)
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildBoxWaktu("${durasi['years']}", "Tahun"),
-                        _buildBoxWaktu("${durasi['months']}", "Bulan"),
-                        _buildBoxWaktu("${durasi['days']}", "Hari"),
+                        Expanded(child: _buildBoxWaktu("${durasi['years']}", "Tahun")),
+                        const SizedBox(width: 8),
+                        Expanded(child: _buildBoxWaktu("${durasi['months']}", "Bulan")),
+                        const SizedBox(width: 8),
+                        Expanded(child: _buildBoxWaktu("${durasi['days']}", "Hari")),
                       ],
                     ),
                     const SizedBox(height: 10),
 
                     // Kotak Angka Jam, Menit, Detik (Detik Berjalan Live)
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildBoxWaktu("${durasi['hours']}".padLeft(2, '0'), "Jam"),
-                        _buildBoxWaktu("${durasi['minutes']}".padLeft(2, '0'), "Menit"),
-                        _buildBoxWaktu("${durasi['seconds']}".padLeft(2, '0'), "Detik (Live)", isLive: true),
+                        Expanded(child: _buildBoxWaktu("${durasi['hours']}".padLeft(2, '0'), "Jam")),
+                        const SizedBox(width: 8),
+                        Expanded(child: _buildBoxWaktu("${durasi['minutes']}".padLeft(2, '0'), "Menit")),
+                        const SizedBox(width: 8),
+                        Expanded(child: _buildBoxWaktu("${durasi['seconds']}".padLeft(2, '0'), "Detik (Live)", isLive: true)),
                       ],
                     ),
 
@@ -453,29 +458,40 @@ class _HalamanKalkulatorUmurState extends State<HalamanKalkulatorUmur> {
 
   Widget _buildBoxWaktu(String nilai, String label, {bool isLive = false}) {
     return Container(
-      width: 95,
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
       decoration: BoxDecoration(
         color: isLive ? Colors.amber : Colors.white.withAlpha(25),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: isLive ? Colors.amber : Colors.white30),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: isLive ? Colors.amber : Colors.white30,
+          width: isLive ? 1.5 : 1.0,
+        ),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            nilai,
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: isLive ? Colors.black : Colors.white,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              nilai,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: isLive ? Colors.black : Colors.white,
+              ),
             ),
           ),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 11,
-              color: isLive ? Colors.black87 : Colors.white70,
-              fontWeight: FontWeight.w500,
+          const SizedBox(height: 2),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
+                color: isLive ? Colors.black87 : Colors.white70,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
@@ -489,7 +505,13 @@ class _HalamanKalkulatorUmurState extends State<HalamanKalkulatorUmur> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(fontSize: 14)),
+          Expanded(
+            child: Text(
+              label,
+              style: const TextStyle(fontSize: 14),
+            ),
+          ),
+          const SizedBox(width: 8),
           Text(
             nilai,
             style: TextStyle(

@@ -195,27 +195,32 @@ class _HalamanPenanggalanBarangMasukState
                           border: Border.all(color: Colors.teal.shade300),
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                const Icon(Icons.calendar_month,
-                                    color: Colors.teal),
-                                const SizedBox(width: 10),
-                                Text(
-                                  formatTglMasehi,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                  ),
+                            const Icon(Icons.calendar_month, color: Colors.teal),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                formatTglMasehi,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
                                 ),
-                              ],
+                              ),
                             ),
-                            const Text(
-                              "Ubah Tanggal",
-                              style: TextStyle(
-                                color: Colors.teal,
-                                fontWeight: FontWeight.bold,
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.teal.shade100,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: const Text(
+                                "Ubah Tanggal",
+                                style: TextStyle(
+                                  color: Colors.teal,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
                               ),
                             ),
                           ],

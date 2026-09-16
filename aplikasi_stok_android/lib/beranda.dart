@@ -8,7 +8,6 @@ import 'input_barang.dart';
 import 'manajemen_stok_sqlite.dart';
 import 'penanggalan_barang_masuk.dart';
 import 'kalkulator_umur.dart';
-import 'stopwatch_challenge.dart';
 import 'session_manager.dart';
 import 'main.dart';
 
@@ -205,7 +204,8 @@ class HalamanBeranda extends StatelessWidget {
           const SizedBox(height: 24),
 
           // ==========================================================
-          // BAGIAN 2: MODUL BARU TUGAS 2 (MENU 7-10)
+          // BAGIAN 2: MODUL BARU TUGAS 2 (MENU 7-9)
+          // (Fitur Stopwatch dapat diakses langsung lewat navbar bawah)
           // ==========================================================
           _sectionHeader(
             judul: "Fitur Lanjutan, Basis Data & Penanggalan (Tugas 2)",
@@ -245,17 +245,6 @@ class HalamanBeranda extends StatelessWidget {
             ikon: Icons.hourglass_top,
             warnaIkon: Colors.purple.shade700,
             tujuan: const HalamanKalkulatorUmur(),
-          ),
-
-          // Menu 10: Fun Racking Challenge (Stopwatch Split-Screen Duel)
-          _menuItem(
-            context: context,
-            nomor: "10",
-            judul: "Fun Racking Challenge (Stopwatch Duel)",
-            deskripsi: "Split-screen duel kecepatan menata rak 2 pekerja berbonus",
-            ikon: Icons.timer,
-            warnaIkon: Colors.amber.shade800,
-            tujuan: const HalamanStopwatchChallenge(),
           ),
 
           const SizedBox(height: 24),

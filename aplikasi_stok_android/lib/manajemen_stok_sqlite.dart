@@ -377,6 +377,13 @@ class _HalamanManajemenStokSQLiteState
         title: const Text("Manajemen Stok SQLite"),
         backgroundColor: Colors.blue.shade800,
         foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            tooltip: "Tambah Barang Baru",
+            icon: const Icon(Icons.add),
+            onPressed: _tampilkanDialogTambah,
+          ),
+        ],
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Colors.amber,
@@ -397,12 +404,12 @@ class _HalamanManajemenStokSQLiteState
                 _buildTabRiwayatLog(),
               ],
             ),
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue.shade800,
         foregroundColor: Colors.white,
+        tooltip: "Tambah Barang Baru",
         onPressed: _tampilkanDialogTambah,
-        icon: const Icon(Icons.add),
-        label: const Text("Tambah Barang"),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -453,7 +460,7 @@ class _HalamanManajemenStokSQLiteState
                   ),
                 )
               : ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  padding: const EdgeInsets.only(left: 12, right: 12, top: 4, bottom: 90),
                   itemCount: list.length,
                   itemBuilder: (context, index) {
                     final item = list[index];
@@ -551,37 +558,58 @@ class _HalamanManajemenStokSQLiteState
 
                             // Baris Bawah: Stok Aktif & Tombol Aksi Cepat
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  "Stok: $stok ${item['satuan']}",
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
+                                Expanded(
+                                  child: Text(
+                                    "Stok: $stok ${item['satuan']}",
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                                 Row(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     // Tombol Mutasi Masuk (+)
                                     IconButton(
+                                      visualDensity: VisualDensity.compact,
+                                      iconSize: 22,
+                                      padding: const EdgeInsets.all(4),
+                                      constraints: const BoxConstraints(),
                                       icon: const Icon(Icons.add_circle, color: Colors.green),
                                       tooltip: "Tambah Stok Masuk",
                                       onPressed: () => _tampilkanDialogMutasi(item, true),
                                     ),
+                                    const SizedBox(width: 4),
                                     // Tombol Mutasi Keluar (-)
                                     IconButton(
+                                      visualDensity: VisualDensity.compact,
+                                      iconSize: 22,
+                                      padding: const EdgeInsets.all(4),
+                                      constraints: const BoxConstraints(),
                                       icon: const Icon(Icons.remove_circle, color: Colors.orange),
                                       tooltip: "Kurang Stok Keluar",
                                       onPressed: () => _tampilkanDialogMutasi(item, false),
                                     ),
+                                    const SizedBox(width: 4),
                                     // Tombol Edit
                                     IconButton(
+                                      visualDensity: VisualDensity.compact,
+                                      iconSize: 22,
+                                      padding: const EdgeInsets.all(4),
+                                      constraints: const BoxConstraints(),
                                       icon: const Icon(Icons.edit, color: Colors.blue),
                                       tooltip: "Edit Rincian Barang",
                                       onPressed: () => _tampilkanDialogEdit(item),
                                     ),
+                                    const SizedBox(width: 4),
                                     // Tombol Hapus
                                     IconButton(
+                                      visualDensity: VisualDensity.compact,
+                                      iconSize: 22,
+                                      padding: const EdgeInsets.all(4),
+                                      constraints: const BoxConstraints(),
                                       icon: const Icon(Icons.delete_outline, color: Colors.red),
                                       tooltip: "Hapus Barang",
                                       onPressed: () => _konfirmasiHapus(item),
@@ -615,7 +643,7 @@ class _HalamanManajemenStokSQLiteState
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 12, bottom: 90),
       itemCount: _daftarLog.length,
       itemBuilder: (context, index) {
         final log = _daftarLog[index];

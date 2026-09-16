@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'beranda.dart';
+import 'stopwatch_challenge.dart';
 import 'bantuan.dart';
 import 'session_manager.dart';
 import 'main.dart';
 
-/// Wrapper Layar Utama dengan Bottom Navigation Bar (3 Menu Wajib)
-/// 1. Beranda & Stopwatch
-/// 2. Pusat Bantuan (Help Center)
-/// 3. Logout Sesi (dengan dialog konfirmasi)
+/// Wrapper Layar Utama dengan Bottom Navigation Bar
+/// 1. Beranda (Menu Fitur)
+/// 2. Stopwatch (Racking Challenge)
+/// 3. Pusat Bantuan (Help Center)
+/// 4. Logout Sesi (dengan dialog konfirmasi)
 class MainNavigationScreen extends StatefulWidget {
   final String username;
   final String namaLengkap;
@@ -35,6 +37,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         username: widget.username,
         namaLengkap: widget.namaLengkap,
       ),
+      const HalamanStopwatchChallenge(),
       const HalamanBantuan(),
       const SizedBox(), // Placeholder untuk tab logout
     ];
@@ -95,7 +98,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         unselectedItemColor: Colors.grey,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
-          if (index == 2) {
+          if (index == 3) {
             // Tab Logout dipilih -> Tampilkan dialog konfirmasi
             _konfirmasiLogout();
           } else {
@@ -110,7 +113,13 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             label: "Beranda",
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.timer_outlined),
+            activeIcon: Icon(Icons.timer),
+            label: "Stopwatch",
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.help_outline),
+            activeIcon: Icon(Icons.help),
             label: "Bantuan",
           ),
           BottomNavigationBarItem(
