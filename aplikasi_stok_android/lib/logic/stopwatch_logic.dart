@@ -1,12 +1,28 @@
 /// Class StopwatchLogic
 /// Memisahkan seluruh logika format waktu stopwatch, lap time, dan penentuan pemenang duel
 class StopwatchLogic {
+
+  static int offsetJam = 0;
+  static int offsetMenit = 0;
+  static int offsetDetik = 0;
+  static int offsetMilidetik = 0;
+
+  /// Total offset awal dalam satuan milidetik
+  static int get totalOffsetMs =>
+      (offsetJam * 3600 * 1000) +
+      (offsetMenit * 60 * 1000) +
+      (offsetDetik * 1000) +
+      offsetMilidetik;
+
   /// Mengonversi milidetik ke format digital Jam:Menit:Detik.Milidetik (00:00:00.00)
   static String formatWaktu(int milliseconds) {
-    int ratusan = (milliseconds / 10).truncate() % 100;
-    int detik = (milliseconds / 1000).truncate() % 60;
-    int menit = (milliseconds / (1000 * 60)).truncate() % 60;
-    int jam = (milliseconds / (1000 * 60 * 60)).truncate();
+    // Akumulasikan milidetik stopwatch dengan offset simulasi pengujian
+    int totalMs = milliseconds + totalOffsetMs;
+
+    int ratusan = (totalMs / 10).truncate() % 100;
+    int detik = (totalMs / 1000).truncate() % 60;
+    int menit = (totalMs / (1000 * 60)).truncate() % 60;
+    int jam = (totalMs / (1000 * 60 * 60)).truncate();
 
     String sJam = jam.toString().padLeft(2, '0');
     String sMenit = menit.toString().padLeft(2, '0');
