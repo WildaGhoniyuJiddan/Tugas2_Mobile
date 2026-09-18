@@ -23,7 +23,7 @@ class _HalamanPenjumlahanPenguranganState
   String? _catatanPerhitungan;
 
   void _tambahStok() {
-    final jumlah = int.tryParse(_jumlahController.text.trim());
+    final jumlah = double.tryParse(_jumlahController.text.trim().replaceAll(',', '.'));
 
     if (_idDipilih == null) {
       _tampilkanPesan("Silakan pilih barang terlebih dahulu!");
@@ -36,7 +36,7 @@ class _HalamanPenjumlahanPenguranganState
 
     final barang = DataGudang.daftarBarang
         .firstWhere((item) => item["id"] == _idDipilih);
-    final stokLama = barang["stok"] as int;
+    final stokLama = barang["stok"] as num;
 
     // Menghitung penjumlahan melalui OperasionalStokLogic
     final hasil = OperasionalStokLogic.hitungTambahStok(
@@ -55,7 +55,7 @@ class _HalamanPenjumlahanPenguranganState
   }
 
   void _kurangStok() {
-    final jumlah = int.tryParse(_jumlahController.text.trim());
+    final jumlah = double.tryParse(_jumlahController.text.trim().replaceAll(',', '.'));
 
     if (_idDipilih == null) {
       _tampilkanPesan("Silakan pilih barang terlebih dahulu!");
@@ -68,7 +68,7 @@ class _HalamanPenjumlahanPenguranganState
 
     final barang = DataGudang.daftarBarang
         .firstWhere((item) => item["id"] == _idDipilih);
-    final stokLama = barang["stok"] as int;
+    final stokLama = barang["stok"] as num;
 
     // Menghitung pengurangan melalui OperasionalStokLogic
     final hasil = OperasionalStokLogic.hitungKurangStok(
@@ -141,7 +141,7 @@ class _HalamanPenjumlahanPenguranganState
                   title: Text(barang["nama"],
                       style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textDark)),
                   trailing: Text(
-                    "Stok: ${barang["stok"]} ${barang["satuan"]}",
+                    "Stok: ${OperasionalStokLogic.formatAngka(barang["stok"] as num)} ${barang["satuan"]}",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: isDipilih ? AppColors.primaryDark : AppColors.textDark,
@@ -166,10 +166,10 @@ class _HalamanPenjumlahanPenguranganState
             // Input Angka
             TextField(
               controller: _jumlahController,
-              keyboardType: TextInputType.number,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
               decoration: AppStyles.inputDecoration(
                 labelText: "Jumlah (Angka)",
-                hintText: "Contoh: 5",
+                hintText: "Contoh: 5 atau 2.5",
                 prefixIcon: Icons.calculate_outlined,
               ),
             ),

@@ -33,12 +33,17 @@ void main() {
       expect(kurangInvalid['sukses'], false);
     });
 
-    test('Perkalian Box & Pembagian Rak', () {
+    test('Perkalian Box & Pembagian Rak (Bilangan Bulat & Desimal)', () {
       expect(OperasionalStokLogic.hitungPerkalianBox(10, 24), 240);
+      expect(OperasionalStokLogic.hitungPerkalianBox(12.5, 4), 50);
 
       final bagi = OperasionalStokLogic.hitungPembagianRak(100, 6);
       expect(bagi['kapasitas'], 16);
       expect(bagi['sisa'], 4);
+
+      final bagiDesimal = OperasionalStokLogic.hitungPembagianRak(10.5, 2);
+      expect(bagiDesimal['kapasitas'], 5);
+      expect(bagiDesimal['sisa'], 0.5);
     });
 
     test('Analisis Ganjil Genap', () {

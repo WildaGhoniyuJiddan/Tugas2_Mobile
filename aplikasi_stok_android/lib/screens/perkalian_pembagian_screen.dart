@@ -28,8 +28,8 @@ class _HalamanPerkalianPembagianState extends State<HalamanPerkalianPembagian> {
 
   // Fungsi Menghitung Perkalian (Jumlah Box * Isi)
   void _hitungPerkalian() {
-    final box = int.tryParse(_boxController.text.trim());
-    final isi = int.tryParse(_isiController.text.trim());
+    final box = double.tryParse(_boxController.text.trim().replaceAll(',', '.'));
+    final isi = double.tryParse(_isiController.text.trim().replaceAll(',', '.'));
 
     if (box == null || isi == null || box < 0 || isi < 0) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -42,16 +42,20 @@ class _HalamanPerkalianPembagianState extends State<HalamanPerkalianPembagian> {
     }
 
     final total = OperasionalStokLogic.hitungPerkalianBox(box, isi);
+    final sBox = OperasionalStokLogic.formatAngka(box);
+    final sIsi = OperasionalStokLogic.formatAngka(isi);
+    final sTotal = OperasionalStokLogic.formatAngka(total);
+
     setState(() {
       _hasilPerkalian =
-          "Rumus : $box box × $isi unit/box\nTotal : $total unit barang siap disimpan di gudang.";
+          "Rumus : $sBox box × $sIsi unit/box\nTotal : $sTotal unit barang siap disimpan di gudang.";
     });
   }
 
   // Fungsi Menghitung Pembagian dan Modulo (Total Stok / Jumlah Rak)
   void _hitungPembagian() {
-    final stok = int.tryParse(_stokController.text.trim());
-    final rak = int.tryParse(_rakController.text.trim());
+    final stok = double.tryParse(_stokController.text.trim().replaceAll(',', '.'));
+    final rak = double.tryParse(_rakController.text.trim().replaceAll(',', '.'));
 
     if (stok == null || rak == null || stok < 0 || rak <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -93,28 +97,30 @@ class _HalamanPerkalianPembagianState extends State<HalamanPerkalianPembagian> {
                     children: [
                       Icon(Icons.calculate_outlined, color: AppColors.secondary),
                       SizedBox(width: 8),
-                      Text(
-                        "1. Hitung Total Kardus / Box (Perkalian ×)",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primaryDark),
+                      Expanded(
+                        child: Text(
+                          "1. Hitung Total Kardus / Box (Perkalian ×)",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primaryDark),
+                        ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 14),
                   TextField(
                     controller: _boxController,
-                    keyboardType: TextInputType.number,
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     decoration: AppStyles.inputDecoration(
                       labelText: "Jumlah Box / Dus",
-                      hintText: "Contoh: 10",
+                      hintText: "Contoh: 10 atau 12.5",
                     ),
                   ),
                   const SizedBox(height: 12),
                   TextField(
                     controller: _isiController,
-                    keyboardType: TextInputType.number,
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     decoration: AppStyles.inputDecoration(
                       labelText: "Isi Barang per Box",
-                      hintText: "Contoh: 24",
+                      hintText: "Contoh: 24 atau 1.5",
                     ),
                   ),
                   const SizedBox(height: 14),
@@ -156,25 +162,27 @@ class _HalamanPerkalianPembagianState extends State<HalamanPerkalianPembagian> {
                     children: [
                       Icon(Icons.safety_divider, color: AppColors.accent),
                       SizedBox(width: 8),
-                      Text(
-                        "2. Distribusi ke Rak (Pembagian ÷ & Modulo %)",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primaryDark),
+                      Expanded(
+                        child: Text(
+                          "2. Distribusi ke Rak (Pembagian ÷ & Modulo %)",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.primaryDark),
+                        ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 14),
                   TextField(
                     controller: _stokController,
-                    keyboardType: TextInputType.number,
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     decoration: AppStyles.inputDecoration(
                       labelText: "Total Jumlah Stok Barang",
-                      hintText: "Contoh: 100",
+                      hintText: "Contoh: 100 atau 50.5",
                     ),
                   ),
                   const SizedBox(height: 12),
                   TextField(
                     controller: _rakController,
-                    keyboardType: TextInputType.number,
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     decoration: AppStyles.inputDecoration(
                       labelText: "Jumlah Rak Penyimpanan",
                       hintText: "Contoh: 6",

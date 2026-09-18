@@ -26,7 +26,7 @@ class _HalamanGanjilGenapState extends State<HalamanGanjilGenap> {
           .firstWhere((item) => item["id"] == _idDipilih);
     }
 
-    final stok = (barangDipilih != null) ? (barangDipilih["stok"] as int) : 0;
+    final stok = (barangDipilih != null) ? (barangDipilih["stok"] as num) : 0;
     final satuan = (barangDipilih != null) ? (barangDipilih["satuan"] as String) : "";
 
     // Analisis ganjil genap menggunakan OperasionalStokLogic
@@ -68,7 +68,7 @@ class _HalamanGanjilGenapState extends State<HalamanGanjilGenap> {
                     return DropdownMenuItem<int>(
                       value: barang["id"],
                       child: Text(
-                        "${barang["nama"]} (Stok: ${barang["stok"]} ${barang["satuan"]})",
+                        "${barang["nama"]} (Stok: ${OperasionalStokLogic.formatAngka(barang["stok"] as num)} ${barang["satuan"]})",
                         style: const TextStyle(color: AppColors.textDark),
                       ),
                     );
@@ -101,7 +101,7 @@ class _HalamanGanjilGenapState extends State<HalamanGanjilGenap> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text("Jumlah Stok   : $stok ${barangDipilih["satuan"]}", style: const TextStyle(color: AppColors.textDark)),
+                    Text("Jumlah Stok   : ${OperasionalStokLogic.formatAngka(stok)} ${barangDipilih["satuan"]}", style: const TextStyle(color: AppColors.textDark)),
                     Text("Logika Rumus  : ${analisis["rumus"]}", style: const TextStyle(color: AppColors.textMuted)),
                     const Divider(height: 24),
 

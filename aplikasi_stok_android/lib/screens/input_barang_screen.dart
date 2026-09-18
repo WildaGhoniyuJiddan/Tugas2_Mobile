@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data_gudang.dart';
+import '../logic/operasional_stok_logic.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_styles.dart';
 import '../styles/app_text_styles.dart';
@@ -33,9 +34,9 @@ class _HalamanInputBarangState extends State<HalamanInputBarang> {
       return;
     }
 
-    final stokAwal = int.tryParse(stokTeks);
+    final stokAwal = double.tryParse(stokTeks.replaceAll(',', '.'));
     if (stokAwal == null || stokAwal < 0) {
-      _tampilkanPesan("Stok awal harus berupa angka bulat positif (>= 0)!");
+      _tampilkanPesan("Stok awal harus berupa angka valid positif (>= 0)!");
       return;
     }
 
@@ -61,7 +62,7 @@ class _HalamanInputBarangState extends State<HalamanInputBarang> {
               style: AppStyles.primaryButton,
               onPressed: () {
                 Navigator.pop(context);
-                _simpanBarang(nama, satuan, stokAwal);
+                _simpanBarang(nama, satuan, OperasionalStokLogic.rapikanAngka(stokAwal));
               },
               child: const Text("Tetap Simpan"),
             ),
@@ -69,11 +70,11 @@ class _HalamanInputBarangState extends State<HalamanInputBarang> {
         ),
       );
     } else {
-      _simpanBarang(nama, satuan, stokAwal);
+      _simpanBarang(nama, satuan, OperasionalStokLogic.rapikanAngka(stokAwal));
     }
   }
 
-  void _simpanBarang(String nama, String satuan, int stokAwal) {
+  void _simpanBarang(String nama, String satuan, num stokAwal) {
     setState(() {
       int maxId = 0;
       for (var item in DataGudang.daftarBarang) {
@@ -164,10 +165,10 @@ class _HalamanInputBarangState extends State<HalamanInputBarang> {
                   // Input 3: Stok Awal
                   TextField(
                     controller: _stokController,
-                    keyboardType: TextInputType.number,
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     decoration: AppStyles.inputDecoration(
                       labelText: "Stok Awal Barang",
-                      hintText: "Contoh: 20",
+                      hintText: "Contoh: 20 atau 15.5",
                       prefixIcon: Icons.numbers_outlined,
                     ),
                   ),
@@ -247,7 +248,7 @@ class _HalamanInputBarangState extends State<HalamanInputBarang> {
                           border: Border.all(color: AppColors.success),
                         ),
                         child: Text(
-                          "Stok: ${barang["stok"]} ${barang["satuan"]}",
+                          "Stok: ${OperasionalStokLogic.formatAngka(barang["stok"] as num)} ${barang["satuan"]}",
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: AppColors.success,

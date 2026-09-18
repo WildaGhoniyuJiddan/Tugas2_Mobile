@@ -146,7 +146,7 @@ class _HalamanManajemenStokSQLiteState
               }
 
               final stok = int.tryParse(stokCtrl.text.trim()) ?? 0;
-              final harga = double.tryParse(hargaCtrl.text.trim()) ?? 0.0;
+              final harga = double.tryParse(hargaCtrl.text.trim().replaceAll(',', '.')) ?? 0.0;
 
               await DatabaseHelper.instance.tambahBarang(
                 kodeBarang: kodeCtrl.text.trim(),
@@ -229,7 +229,7 @@ class _HalamanManajemenStokSQLiteState
             style: AppStyles.primaryButton,
             onPressed: () async {
               final nama = namaCtrl.text.trim();
-              final harga = double.tryParse(hargaCtrl.text.trim()) ?? 0.0;
+              final harga = double.tryParse(hargaCtrl.text.trim().replaceAll(',', '.')) ?? 0.0;
 
               await DatabaseHelper.instance.updateBarang(
                 id: item['id'],
