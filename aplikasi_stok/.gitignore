@@ -2,6 +2,8 @@
 .dart_tool/
 .packages
 build/
+.pub-cache/
+.pub/
 
 # Directory created by dartdoc
 doc/api/
@@ -10,3 +12,7 @@ doc/api/
 .DS_Store
 *.swp
 *.bak
+*.log
+.idea/
+.vscode/
+*.iml

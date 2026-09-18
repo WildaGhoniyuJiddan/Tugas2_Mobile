@@ -1,27 +1,91 @@
-# Backup & archives
+# ==========================================
+# Backup & Archives
+# ==========================================
 aplikasi_stok_flutter_backup/
 *.zip
+*.tar.gz
+*.rar
+*.7z
+*.bak
+*.swp
+*~
 
-# Dart & Flutter build / cache artifacts
+# ==========================================
+# Dart & Flutter Build / Cache Artifacts
+# ==========================================
 .dart_tool/
 .packages
 build/
 .pub-cache/
 .pub/
+**/doc/api/
 
-# Android build & local configuration
+# Flutter plugin resolution and ephemeral files
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-plugins-dependencies.json
+ephemeral/
+
+# Symbol processing & Obfuscation
+app.*.symbols
+app.*.map.json
+
+# ==========================================
+# Android & Kotlin Build / Cache Artifacts
+# ==========================================
+.gradle/
+**/.gradle/
+.kotlin/
+**/.kotlin/
 **/android/.gradle/
+**/android/.kotlin/
 **/android/local.properties
 **/android/captures/
 **/android/gradlew
 **/android/gradlew.bat
-**/android/GeneratedPluginRegistrant.java
+**/android/**/GeneratedPluginRegistrant.java
+**/android/.cxx/
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+gradle-wrapper.jar
+**/gradle-wrapper.jar
 
-# IDE & Editor files
+# Security & Signing (Keystores and credentials)
+key.properties
+**/key.properties
+*.keystore
+**/*.keystore
+*.jks
+**/*.jks
+
+# ==========================================
+# Logs & Temporary Files
+# ==========================================
+*.log
+*.tmp
+*.temp
+
+# ==========================================
+# IDE & Editor Configuration
+# ==========================================
 .idea/
 *.iml
+*.ipr
+*.iws
 .vscode/
+.atom/
+.history/
+.buildlog/
 
-# OS files
+# ==========================================
+# OS Generated Files
+# ==========================================
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+desktop.ini

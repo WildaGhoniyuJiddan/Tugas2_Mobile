@@ -1,12 +1,42 @@
-# Files and directories created by pub
-.dart_tool/
-.packages
-build/
-
-# Directory created by dartdoc
-doc/api/
-
-# Avoid committing IDE / OS specific files
-.DS_Store
+# Miscellaneous
+*.class
+*.log
+*.pyc
 *.swp
-*.bak
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode string covers a flare resource directory and the .vscode folder
+.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-plugins-dependencies.json
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Symbol processing related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
