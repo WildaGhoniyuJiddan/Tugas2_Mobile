@@ -10,7 +10,7 @@ void main() {
     await tester.pumpWidget(const AplikasiStokApp());
     await tester.pumpAndSettle();
 
-    expect(find.text('WarehouseSmart'), findsOneWidget);
+    expect(find.text('Stok Hebat'), findsOneWidget);
     expect(find.text('LOGIN MASUK'), findsOneWidget);
   });
 }

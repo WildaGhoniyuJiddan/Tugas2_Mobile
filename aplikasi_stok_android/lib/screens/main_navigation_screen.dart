@@ -56,7 +56,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ],
         ),
         content: const Text(
-          "Apakah Anda yakin ingin mengakhiri sesi dan keluar dari aplikasi WarehouseSmart?",
+          "Apakah Anda yakin ingin mengakhiri sesi dan keluar dari aplikasi Stok Hebat?",
         ),
         actions: [
           TextButton(

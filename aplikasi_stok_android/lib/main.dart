@@ -23,7 +23,7 @@ class AplikasiStokApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'WarehouseSmart',
+      title: 'Stok Hebat',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(

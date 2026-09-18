@@ -1,10 +1,10 @@
 # PRODUCT REQUIREMENT DOCUMENT (PRD)
-## Aplikasi Mobile "WarehouseSmart" (Manajemen Stok Gudang & Sistem Utilitas Terintegrasi)
+## Aplikasi Mobile "Stok Hebat" (Manajemen Stok Gudang & Sistem Utilitas Terintegrasi)
 
 ---
 
 ### 📌 INFORMASI DOKUMEN & PROYEK
-- **Nama Proyek**: WarehouseSmart Mobile App
+- **Nama Proyek**: Stok Hebat Mobile App
 - **Mata Kuliah**: Pemrograman Aplikasi Mobile
 - **Jenis Penugasan**: Tugas Kelompok (3–4 Orang)
 - **Versi Dokumen**: 2.2.0 (Revisi Stopwatch Split-Screen Fun Challenge & Kalkulator Umur Berbasis 00:00:00)
@@ -238,7 +238,7 @@ Tampilan Beranda mengelompokkan menu eksisting dan menu baru dengan tata letak y
 
 ```text
 +-------------------------------------------------------------+
-| [AppBar: WarehouseSmart]                       [Icon Logout]|
+| [AppBar: Stok Hebat]                           [Icon Logout]|
 +-------------------------------------------------------------+
 | [Banner: Halo, Administrator!]                              |
 | Sistem Manajemen Stok Gudang & Utilitas Terintegrasi        |
@@ -562,7 +562,7 @@ aplikasi_stok_android/
 Laporan akhir disusun untuk memenuhi kriteria evaluasi SPADA dengan format standar:
 
 ### COVER LAPORAN
-- Judul: *Laporan Pembuatan Aplikasi Mobile: "WarehouseSmart - Sistem Manajemen Stok Gudang dan Utilitas Terintegrasi Berbasis Flutter dan SQLite"*
+- Judul: *Laporan Pembuatan Aplikasi Mobile: "Stok Hebat - Sistem Manajemen Stok Gudang dan Utilitas Terintegrasi Berbasis Flutter dan SQLite"*
 - Data Anggota Kelompok (4 Mahasiswa) & Dosen Pengampu.
 
 ### BAB I: PENDAHULUAN

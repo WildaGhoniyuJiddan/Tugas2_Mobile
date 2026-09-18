@@ -135,7 +135,7 @@ class _HalamanLoginState extends State<HalamanLogin> {
 
                     // Judul Aplikasi
                     const Text(
-                      "WarehouseSmart",
+                      "Stok Hebat",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 24,

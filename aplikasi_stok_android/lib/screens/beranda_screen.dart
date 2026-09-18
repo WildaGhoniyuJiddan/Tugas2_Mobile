@@ -19,7 +19,7 @@ import 'penanggalan_barang_masuk_screen.dart';
 import 'kalkulator_umur_screen.dart';
 import 'stopwatch_challenge_screen.dart';
 
-/// Halaman Menu Utama / Dashboard Terpadu Aplikasi WarehouseSmart
+/// Halaman Menu Utama / Dashboard Terpadu Aplikasi Stok Hebat
 /// Menggunakan tema warna Lavender (AppColors.primary) dan styling terpisah (AppStyles).
 class HalamanBeranda extends StatelessWidget {
   final String username;
@@ -105,8 +105,8 @@ class HalamanBeranda extends StatelessWidget {
                   children: [
                     Icon(Icons.warehouse_rounded, color: Colors.white, size: 20),
                     SizedBox(width: 6),
-                    Text(
-                      "WAREHOUSESMART",
+                    const Text(
+                      "STOK HEBAT",
                       style: AppTextStyles.bannerSubtitle,
                     ),
                   ],

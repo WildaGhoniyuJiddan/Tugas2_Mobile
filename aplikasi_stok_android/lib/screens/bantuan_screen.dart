@@ -38,7 +38,7 @@ class HalamanBantuan extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Panduan Penggunaan WarehouseSmart",
+                        "Panduan Penggunaan Stok Hebat",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
